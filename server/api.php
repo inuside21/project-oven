@@ -1,269 +1,859 @@
 <?php
+    ini_set('display_errors', 0);
 
     // Database
     include("../config/config.php");
 
     // check
     if (!isset($_GET['mode'])) {
-        ResultError("error");
+        echo json_encode(array("status" => "error", "message" => "Mode Error"));
+        exit();
     }
 
-    // Convert GET to OBJECT
-    {
-        $resData = new stdClass();
-        foreach ($_GET as $key => $value) 
-        {
-            if ($key != 'mode') 
-            {
-                $resData->$key = $value;
-            }
-        }
-    }
+    /*
+        tip:    USE var_dump return in this page, then console.log return in webpage form submit / ajax
+                to view structures
 
-
+        use:    https://vardumpformatter.io/
+    /*
 
     /*
         ======================================
         MODES
         ======================================
     */
-    // System
-    if ($_GET['mode'] == 'systemcheck')
-    {
-        //
-        $systemList = array();
 
-        //
-        $sql = "select * from system_tbl";
-        $rsSystem = mysqli_query($connection, $sql);
-        $rsSystemCount = mysqli_num_rows($rsSystem);
-        if ($rsSystemCount > 0)
-        {
-            while ($rowsSystem = mysqli_fetch_object($rsSystem))
-            {
-                $systemList[] = implode(',', (array)$rowsSystem);
-            }
-        }
-        
-        $newResult = implode('|', $systemList);
-        ResultOK("", $newResult);
-    }
-
-    // User - Login
+    // User Login
+    // ----------------------
     if ($_GET['mode'] == 'userlogin')
     {
-        // check
+        $resData = JSONGet();
+
+        // login
+        $sql="select * FROM user_tbl where binary user_uname = '" . $_POST['uuname'] . "' and binary user_pword = '" . $_POST['upword'] . "'"; 
+        $rsgetacc=mysqli_query($connection2,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
         {
-            if (strlen($resData->uuname) <= 0 || strlen($resData->uuname) > 100 || ctype_space($resData->uuname) || str_contains($resData->uuname, ' ') || $resData->uuname == "")
+            // others
             {
-                ResultError("Login failed. Invalid characters detected.");
-            }
-
-            if (strlen($resData->upword) <= 0 || strlen($resData->upword) > 100 || ctype_space($resData->upword) || str_contains($resData->upword, ' ') || $resData->upword == "")
-            {
-                ResultError("Login failed. Invalid characters detected.");
-            }
-        }
-
-        //
-        $userList = array();
-
-        //
-        $sql = "select * from user_tbl where binary user_uname = '" . $resData->uuname . "' and binary user_pword = '" . $resData->upword . "'";
-        $rsUser = mysqli_query($connection, $sql);
-        $rsUserCount = mysqli_num_rows($rsUser);
-        if ($rsUserCount > 0)
-        {
-            while ($rowsUser = mysqli_fetch_object($rsUser))
-            {
-                $userList[] = implode(',', (array)$rowsUser);
-            }
-
-            $newResult = implode('|', $userList);
-            ResultOK("", $newResult);
-        }
-        
-        ResultError("Login failed. Account not exist.");
-    }
-
-    // User - Register
-    if ($_GET['mode'] == 'userregister')
-    {
-        // check
-        {
-            if (strlen($resData->uuname) <= 0 || strlen($resData->uuname) > 100 || ctype_space($resData->uuname) || str_contains($resData->uuname, ' ') || $resData->uuname == "")
-            {
-                ResultError("Register failed. Invalid characters detected1.");
-            }
-
-            if (strlen($resData->upword) <= 0 || strlen($resData->upword) > 100 || ctype_space($resData->upword) || str_contains($resData->upword, ' ') || $resData->upword == "")
-            {
-                ResultError("Register failed. Invalid characters detected2.");
-            }
-
-            if (strlen($resData->unick) <= 0 || strlen($resData->unick) > 100 || ctype_space($resData->unick) || str_contains($resData->unick, ' ') || $resData->unick == "")
-            {
-                ResultError("Register failed. Invalid characters detected3.");
-            }
-
-            if (strlen($resData->uemail) <= 0 || strlen($resData->uemail) > 100 || ctype_space($resData->uemail) || str_contains($resData->uemail, ' ') || $resData->uemail == "")
-            {
-                ResultError("Register failed. Invalid characters detected4.");
-            }
-
-            if (strlen($resData->uaddbnb) <= 0 || strlen($resData->uaddbnb) > 100 || ctype_space($resData->uaddbnb) || str_contains($resData->uaddbnb, ' ') || $resData->uaddbnb == "")
-            {
-                ResultError("Register failed. Invalid characters detected5.");
-            }
-        }
-
-        //
-        {
-            // exist?
-            $sql = "select * from user_tbl where binary user_uname = '" . $resData->uuname . "'";
-            $rsUser = mysqli_query($connection, $sql);
-            $rsUserCount = mysqli_num_rows($rsUser);
-            if ($rsUserCount > 0)
-            {
-                ResultError("Register failed. Account already exist.");
-            }
-
-            // exist?
-            $sql = "select * from user_tbl where binary user_email = '" . $resData->uemail . "'";
-            $rsUser = mysqli_query($connection, $sql);
-            $rsUserCount = mysqli_num_rows($rsUser);
-            if ($rsUserCount > 0)
-            {
-                ResultError("Register failed. Email already exist.");
-            }
-
-            // exist?
-            $sql = "select * from user_tbl where binary user_nickname = '" . $resData->unick . "'";
-            $rsUser = mysqli_query($connection, $sql);
-            $rsUserCount = mysqli_num_rows($rsUser);
-            if ($rsUserCount > 0)
-            {
-                ResultError("Register failed. Nickname already exist.");
-            }
-
-            // exist?
-            $sql = "select * from user_tbl where binary user_address_bnb = '" . $resData->uaddbnb . "'";
-            $rsUser = mysqli_query($connection, $sql);
-            $rsUserCount = mysqli_num_rows($rsUser);
-            if ($rsUserCount > 0)
-            {
-                ResultError("Register failed. Binance address already exist.");
-            }
-        }
-
-        // Ref
-        {
-            $refData = new stdClass();
-            $refData->id = "-1";
-
-            // exist?
-            $sql = "select * from user_tbl where user_ref = '" . $resData->uref . "'";
-            $rsUser = mysqli_query($connection, $sql);
-            $rsUserCount = mysqli_num_rows($rsUser);
-            if ($rsUserCount > 0)
-            {
-                while ($rowsUser = mysqli_fetch_object($rsUser))
+                // archive?
+                if ($rowsgetacc->user_archive == "1")
                 {
-                    $refData = $rowsUser;
+                    continue;
+                }
+
+                // blocked?
+                if ($rowsgetacc->user_block == "1")
+                {
+                    JSONSet("error", "Login Error", "This account is temporarily blocked.");
                 }
             }
+
+            $tokenNew = GUID();
+
+            $sql="update user_tbl set user_token = '" . $tokenNew . "' where id = '" . $rowsgetacc->id . "'"; 
+            $rsupdate=mysqli_query($connection2,$sql);
+
+
+            JSONSet("ok", "", "", $tokenNew);
         }
 
-        //
-        $sql = "    insert into user_tbl
-                        (
-                            user_date,
-                            user_ref,
-                            user_refby,
-                            user_uname,
-                            user_pword,
-                            user_nickname,
-                            user_email,
-                            user_address_bnb
-                        )
-                    values
-                        (
-                            '" . strtotime($dateResult) . "',
-                            '" . GUID() . "',
-                            '" . $resData->uuname . "',
-                            '" . $refData->id . "'
-                            '" . $resData->upword . "',
-                            '" . $resData->unick . "',
-                            '" . $resData->uemail . "',
-                            '" . $resData->uaddbnb . "'
-                        )
-        ";
-        $rsUser = mysqli_query($connection, $sql);
-
-        ResultOK("Registration success!");
+        // result
+        JSONSet("error", "Login Error", "Login Error");
     }
 
-    // User - Select Save
-    if ($_GET['mode'] == 'userselectsave')
+    // User Token
+    // ----------------------
+    if ($_GET['mode'] == 'userverifytoken')
     {
-        // check
+        $resData = JSONGet();
+
+        // login
+        $sql="select * FROM user_tbl where user_token = '" . $resData->utoken . "'"; 
+        $rsgetacc=mysqli_query($connection2,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
         {
-            
+            // others
+            {
+                // archive?
+                if ($rowsgetacc->user_archive == "1")
+                {
+                    continue;
+                }
+
+                // blocked?
+                if ($rowsgetacc->user_block == "1")
+                {
+                    JSONSet("error", "Login Error", "This account is temporarily blocked.");
+                }
+            }
+
+            JSONSet("ok", "", "", $rowsgetacc);
         }
 
-        //
+        // result
+        JSONSet("error", "Token Error", "Token Error");
+    }
+
+
+    // Dashboard Rep Item 1
+    // ----------------------
+    if ($_GET['mode'] == 'dashboard1')
+    {
+        $resData = JSONGet();
+        
+        // set
+        $output = 0;
+
+        // login
+        $sql="select count(*) as resCount FROM project_tbl where proj_status = '0' and proj_status = '1'"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
         {
-            // exist?
-            $sql = "select * from user_tbl where id = '" . $resData->uid . "' and user_activated = '1'";
-            $rsUser = mysqli_query($connection, $sql);
-            $rsUserCount = mysqli_num_rows($rsUser);
-            if ($rsUserCount > 0)
+            $output = $rowsgetacc->resCount;
+        }
+
+        JSONSet("ok", "", "", $output);
+    }
+
+    // Dashboard Rep Item 2
+    // ----------------------
+    if ($_GET['mode'] == 'dashboard2')
+    {
+        $resData = JSONGet();
+
+        // set
+        $output = 0;
+
+        // login
+        $sql="select count(*) as resCount FROM project_tbl where proj_status = '0'"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            $output = $rowsgetacc->resCount;
+        }
+
+        JSONSet("ok", "", "", $output);
+    }
+
+    // Dashboard Rep Item 3
+    // ----------------------
+    if ($_GET['mode'] == 'dashboard3')
+    {
+        $resData = JSONGet();
+
+        // set
+        $output = 0;
+
+        // login
+        $sql="select count(*) as resCount FROM project_tbl where proj_status = '0' and proj_enddate < '" . $dateResult . "'"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            $output = $rowsgetacc->resCount;
+        }
+
+        JSONSet("ok", "", "", $output);
+    }
+
+
+    // User List
+    // ----------------------
+    if ($_GET['mode'] == 'guserlist')
+    {
+        $resData = JSONGet();
+
+        // set
+        $resList = array();
+
+        // login
+        $sql="select * FROM user_tbl where user_archive != 1"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            // others
             {
-                ResultError("Saving failed. Avatar and Pokemon is already set. Relogin your account.");
+                if ($rowsgetacc->user_pos == "0")
+                {
+                    $rowsgetacc->user_pos = "Normal User";
+                }
+
+                if ($rowsgetacc->user_pos == "1")
+                {
+                    $rowsgetacc->user_pos = "Administrator";
+                }
+            }
+
+            $resList[] = $rowsgetacc;
+        }
+
+        JSONSet("ok", "", "", $resList);
+    }
+
+    // User View
+    // ----------------------
+    if ($_GET['mode'] == 'guserview')
+    {
+        $resData = JSONGet();
+
+        // check exist
+        {
+            $sql="select * FROM user_tbl where id = '" . $resData->reqid . "' and user_archive != 1"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                // result
+                JSONSet("ok", "", "", $rowsgetacc);
             }
         }
 
-        // poke data
+        // result
+        JSONSet("error", "", "");
+    }
+
+    // User Add
+    // ----------------------
+    if ($_GET['mode'] == 'guseradd')
+    {
+        $resData = JSONGet();
+
+        // check
         {
-            $pokeData = RequestData('https://pokeapi.co/api/v2/pokemon/' . $resData->upokemon);
+
+        }
+
+        // check exist
+        {
+            // login
+            $sql="select * FROM user_tbl where binary user_uname = '" . $resData->rUname . "' and user_archive != 1"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                JSONSet("error", "Adding Failed", "Username already exist.");
+            }
+
+            // email
+            $sql="select * FROM user_tbl where binary user_email = '" . $resData->rEmail . "' and user_archive != 1"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                JSONSet("error", "Adding Failed", "Email already exist.");
+            }
+
+            // contact
+            $sql="select * FROM user_tbl where binary user_contact = '" . $resData->rContact . "' and user_archive != 1"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                JSONSet("error", "Adding Failed", "Contact already exist.");
+            }
+        }
+
+        // login
+        $sql="insert into user_tbl
+                (
+                    user_date,
+                    user_block,
+                    user_pos,
+                    user_uname,
+                    user_pword,
+                    user_fname,
+                    user_contact,
+                    user_email,
+                    user_address
+                )
+            values
+                (
+                    '" . $dateOnlyResult . "',
+                    '" . $resData->rBlock. "',
+                    '" . $resData->rAccess. "',
+                    '" . $resData->rUname . "',
+                    '" . $resData->rPword . "',
+                    '" . $resData->rFname . "',
+                    '" . $resData->rContact . "',
+                    '" . $resData->rEmail . "',
+                    '" . $resData->rAddress . "'
+                )"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+
+        // result
+        JSONSet("ok", "Adding Success!", "New user added successfully.");
+    }
+
+    // User Edit
+    // ----------------------
+    if ($_GET['mode'] == 'guseredit')
+    {
+        $resData = JSONGet();
+
+        // check
+        {
+
+        }
+
+        // check exist
+        {
+            $isExist = false;
+            $sql="select * FROM user_tbl where id = '" . $resData->rId . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                $isExist = true;
+            }
+
+            if (!$isExist)
+            {
+                JSONSet("error", "Update Failed", "User not exist.");
+            }
+        }
+
+        // check exist
+        {
+            // login
+            $sql="select * FROM user_tbl where binary user_uname = '" . $resData->rUname . "' and id != '" . $resData->rId  . "' and user_archive != 1"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                JSONSet("error", "Update Failed", "Username already exist.");
+            }
+
+            // email
+            $sql="select * FROM user_tbl where binary user_email = '" . $resData->rEmail . "' and id != '" . $resData->rId  . "' and user_archive != 1"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                JSONSet("error", "Update Failed", "Email already exist.");
+            }
+
+            // contact
+            $sql="select * FROM user_tbl where binary user_contact = '" . $resData->rContact . "' and id != '" . $resData->rId  . "' and user_archive != 1"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                JSONSet("error", "Update Failed", "Contact already exist.");
+            }
+        }
+
+        // login
+        $sql="  update user_tbl set
+                    user_block = '" . $resData->rBlock. "',
+                    user_pos = '" . $resData->rAccess. "',
+                    user_uname = '" . $resData->rUname. "',
+                    user_pword = '" . $resData->rPword. "',
+                    user_fname = '" . $resData->rFname. "',
+                    user_contact = '" . $resData->rContact. "',
+                    user_email = '" . $resData->rEmail. "',
+                    user_address = '" . $resData->rAddress. "'
+                where
+                    id = '" . $resData->rId . "'
+        "; 
+        $rsgetacc=mysqli_query($connection,$sql);
+
+        // result
+        JSONSet("ok", "Update Success!", "User updated successfully.");
+    }
+
+    // User Delete
+    // ----------------------
+    if ($_GET['mode'] == 'guserdelete')
+    {
+        $resData = JSONGet();
+
+        // check
+        {
+
+        }
+
+        // check exist
+        {
+            $isExist = false;
+            $sql="select * FROM user_tbl where id = '" . $resData->duser->id . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                $isExist = true;
+            }
+
+            if (!$isExist)
+            {
+                JSONSet("error", "Delete Failed", "User not exist.");
+            }
+        }
+
+        // login
+        $sql="update user_tbl set user_archive = 1 where id = '" . $resData->duser->id . "'"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+
+        // result
+        JSONSet("ok", "Delete Success!", "User removed successfully.");
+    }
+
+    // User Edit (Settings)
+    // ----------------------
+    if ($_GET['mode'] == 'guseredit2')
+    {
+        $resData = JSONGet();
+
+        // check
+        {
+
+        }
+
+        // check exist
+        {
+            $isExist = false;
+            $sql="select * FROM user_tbl where id = '" . $resData->rId . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                $isExist = true;
+            }
+
+            if (!$isExist)
+            {
+                JSONSet("error", "Update Failed", "Account not exist.");
+            }
+        }
+
+        // check exist
+        {
+            // email
+            $sql="select * FROM user_tbl where binary user_email = '" . $resData->rEmail . "' and id != '" . $resData->rId  . "' and user_archive != 1"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                JSONSet("error", "Update Failed", "Email already exist.");
+            }
+
+            // contact
+            $sql="select * FROM user_tbl where binary user_contact = '" . $resData->rContact . "' and id != '" . $resData->rId  . "' and user_archive != 1"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                JSONSet("error", "Update Failed", "Contact already exist.");
+            }
+        }
+
+        // login
+        $sql="  update user_tbl set
+                    user_pword = '" . $resData->rPword. "',
+                    user_fname = '" . $resData->rFname. "',
+                    user_contact = '" . $resData->rContact. "',
+                    user_email = '" . $resData->rEmail. "',
+                    user_address = '" . $resData->rAddress. "'
+                where
+                    id = '" . $resData->rId . "'
+        "; 
+        $rsgetacc=mysqli_query($connection,$sql);
+
+        // result
+        JSONSet("ok", "Update Success!", "Account updated successfully.");
+    }
+
+
+    // project - add
+    // ----------------------
+    if ($_GET['mode'] == 'projadd')
+    {
+        $resData = JSONGet();
+
+        // check
+        {
+            if ($resData->pName == "")
+            {
+                JSONSet("error", "Add Failed", "Name must not empty.");
+            }
+        }
+
+        // check image
+        {
+            // create image name
+            $imageName = GUID() . ".png";
+            $imagemptyName = "none.png";
+
+            try 
+            {
+                if ($resData->rImage != "")
+                {
+                    $imageConvert = base64_decode($resData->rImage);
+
+                    // check
+                    if (getimagesizefromstring($imageConvert) !== false) 
+                    {
+                        file_put_contents("../files/images/" . $imageName, $imageConvert);
+                    }   
+                    else
+                    {
+                        $imageName = $imagemptyName;
+                    }
+                }
+                else
+                {
+                    $imageName = $imagemptyName;
+                }
+            }
+            catch (Exception $e)
+            {
+                $imageName = $imagemptyName;
+            }
+        }
+
+        // item
+        {
+            $sql="insert into project_tbl
+                    (
+                        proj_userid,
+                        proj_clientid,
+                        proj_clientcontact,
+                        proj_dept,
+                        proj_date,
+                        proj_status,
+                        proj_phase,
+                        proj_startdate,
+                        proj_enddate,
+                        proj_name,
+                        proj_description,
+                        proj_po,
+                        proj_oic,
+                        proj_img
+                    )
+                values
+                    (
+                        '" . $resData->rUid . "',
+                        '" . $resData->pCustomer . "',
+                        '" . $resData->pCustomerName . "',
+                        '" . $resData->pDept . "',
+                        '" . $dateResult . "',
+                        '" . $resData->pStatus . "',
+                        '" . $resData->pPhase . "',
+                        '" . $resData->pDateStart . "',
+                        '" . $resData->pDateEnd . "',
+                        '" . $resData->pName . "',
+                        '" . $resData->pDesc . "',
+                        '" . $resData->pPo . "',
+                        '" . $resData->pOic . "',
+                        '" . $imageName . "'
+                    )"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            $itemId = mysqli_insert_id($connection);
+        }
+
+        // result
+        JSONSet("ok", "Add Success!", "New project detail added successfully.");
+    }
+
+    // project - edit
+    // ----------------------
+    if ($_GET['mode'] == 'projedit')
+    {
+        $resData = JSONGet();
+
+        $targetDirectory = "../files/images/";
+
+        // check
+        {
+            if ($resData->pName == "")
+            {
+                JSONSet("error", "Update Failed", "Name must not empty.");
+            }
+        }
+
+        /*
+        // check image
+        {
+            // create image name
+            $imageName = GUID() . ".png";
+            $imagemptyName = $resData->rImageOrig;
+
+            try 
+            {
+                if ($resData->rImage != "")
+                {
+                    $imageConvert = base64_decode($resData->rImage);
+
+                    // check
+                    if (getimagesizefromstring($imageConvert) !== false) 
+                    {
+                        file_put_contents("../files/images/" . $imageName, $imageConvert);
+
+                        // delete
+                        unlink($targetDirectory . $resData->rImageOrig);
+                    }   
+                    else
+                    {
+                        $imageName = $imagemptyName;
+                    }
+                }
+                else
+                {
+                    $imageName = $imagemptyName;
+                }
+            }
+            catch (Exception $e)
+            {
+                $imageName = $imagemptyName;
+            }
+        }
+        */
+
+        // item
+        {
+            $sql="update project_tbl set
+                        proj_status = '" . $resData->pStatus . "',
+                        proj_phase = '" . $resData->pPhase . "',
+                        proj_startdate = '" . $resData->pDateStart . "',
+                        proj_enddate = '" . $resData->pDateEnd . "',
+                        proj_oic = '" . $resData->pOic . "'
+                where
+                        id = '" . $resData->rId . "'
+            "; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            $itemId = mysqli_insert_id($connection);
+        }
+
+        // result
+        JSONSet("ok", "Update Success!", "Project detail updated successfully.");
+    }
+
+    // project - List By Dept Name
+    // ----------------------
+    if ($_GET['mode'] == 'projlist4')
+    {
+        $resData = JSONGet();
+
+        // set
+        $resList = array();
+
+        // login
+        $userData = new stdClass();
+        $sql="select * FROM user_tbl where id = '" . $_GET['uid'] . "'"; 
+        $rsgetacc=mysqli_query($connection2,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            $userData = $rowsgetacc;
+        }
+
+        // user dept?
+        {
+            // upper
+            if ($userData->user_dept == "management" || $userData->user_dept == "sales" || $userData->user_dept == "admin" || $userData->user_dept == "cso")
+            {
+                $sql="select * FROM project_tbl where (proj_type = '0' or proj_type = '4') order by id desc"; 
+            }   
+
+            //
+            else
+            {
+                $sql="select * FROM project_tbl where proj_dept = '" . $userData->user_dept . "' and (proj_type = '0' or proj_type = '4') order by id desc"; 
+            }
+        }   
+
+        // login
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            // other
+            {
+                //
+                if ($rowsgetacc->proj_type == "0")
+                {
+                    $rowsgetacc->proj_type = "WITH P.O.";
+                }
+
+                //
+                if ($rowsgetacc->proj_type == "4")
+                {
+                    $rowsgetacc->proj_type = "FOR INQUIRY";
+                }
+
+                //
+                $rowsgetacc->proj_clientText = $getCustomerListById[(int)$rowsgetacc->proj_clientid]->cust_name;
+                $rowsgetacc->proj_companyText = $getCompanyListById[$getCustomerListById[(int)$rowsgetacc->proj_clientid]->cust_companyid]->company_name;
+                $rowsgetacc->proj_phaseText = $getProjPhaseListById[(int)$rowsgetacc->proj_phase]->proj_phase_name;
+            }
+
+            $resList[] = $rowsgetacc;
+        }
+
+        JSONSet("ok", "", $sql, $resList);
+    }
+
+    // project - view
+    // ----------------------
+    if ($_GET['mode'] == 'projview')
+    {
+        $resData = JSONGet();
+
+        // check exist
+        {
+            $sql="select * FROM project_tbl where id = '" . $resData->reqid . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                // result
+                JSONSet("ok", "", "", $rowsgetacc);
+            }
+        }
+
+        // result
+        JSONSet("error", "", "");
+    }
+
+    // project - delete
+    // ----------------------
+    if ($_GET['mode'] == 'projdelete')
+    {
+        /*
+        $resData = JSONGet();
+
+        $targetDirectory = "../files/images/";
+
+        // check
+        {
+
         }
 
         //
-        $sql = "    insert into poke_tbl
-                        (
-                            poke_date,
-                            poke_id,
-                            poke_trainer_original,
-                            poke_trainer_current,
-                            poke_nickname
-                        )
-                    values
-                        (
-                            '" . strtotime($dateResult) . "',
-                            '" . $resData->upokemon . "',
-                            '" . $resData->uid . "',
-                            '" . $resData->uid . "',
-                            '" . $pokeData->name . "'
-                        )
-        ";
-        $rsUser = mysqli_query($connection, $sql);
+        $sql = " select * from project_tbl where id = '" . $resData->dProj->id . "'";
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            if ($rowsgetacc->proj_img == "none.png")
+            {
+                continue;
+            }
 
-        //
-        $sql = "    update user_tbl set
-                            user_activated = '" . $resData->uid . "',
-                            user_avatar = '" . $resData->uavatar . "'
-                    where
-                        id = '" . $resData->uid . "'
-        ";
-        $rsUser = mysqli_query($connection, $sql);
+            // delete
+            unlink($targetDirectory . $rowsgetacc->proj_img);
+        }
 
-        ResultOK("Saving success!");
+        // login
+        $sql="delete from project_tbl where id = '" . $resData->dProj->id . "'"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+
+        // result
+        JSONSet("ok", "Delete Success!", "Project detail removed successfully.");
+        */
+
+        JSONSet("ok", "Delete Failed!", "Request to OM for project data removal.");
     }
 
-    // Test
-    if ($_GET['mode'] == 'test1')
+
+    // file - List By Proj Id
+    // ----------------------
+    if ($_GET['mode'] == 'filelist2')
     {
-        echo GUID();
+        $resData = JSONGet();
+
+        // set
+        $resList = array();
+
+        // login
+        $sql="select * FROM files_tbl where file_projid = '" . $_GET['pid'] . "' order by file_type asc"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            $resList[] = $rowsgetacc;
+        }
+
+        JSONSet("ok", "", "", $resList);
+    }
+
+    // file - upload By Proj Id
+    // ----------------------
+    if ($_GET['mode'] == 'fileupload2')
+    {
+        $targetDirectory = "../projectfiles/"; // Specify the directory where you want to store the uploaded files
+        if (!empty($_FILES)) {
+            $tempFile = $_FILES['file']['tmp_name'];
+            $fileName = $_FILES['file']['name'];
+
+            //
+            $fileName = $_GET['pid'] . "-" . $fileName;
+
+            // 
+            $targetFile = $targetDirectory . $fileName;
+            $ext = pathinfo($targetFile, PATHINFO_EXTENSION);
+
+            // save DB
+            $sql = "    insert into files_tbl
+                            (
+                                file_projid,
+                                file_name,
+                                file_type,
+                                file_date
+                            )
+                        values
+                            (
+                                '" . $_GET['pid'] . "',
+                                '" . $fileName . "',
+                                '" . $ext . "',
+                                '" . $dateResult . "'
+                            )
+            ";
+            $rsgetacc=mysqli_query($connection,$sql);
+
+
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($tempFile, $targetFile)) {
+                // File was uploaded successfully
+                echo "File uploaded: " . $fileName;
+            } else {
+                // Error occurred while uploading the file
+                echo "Error uploading file.";
+            }
+        }
+    }
+
+    // file - delete By Id
+    // ----------------------
+    if ($_GET['mode'] == 'filedelete2')
+    {
+        $resData = JSONGet();
+
+        $targetDirectory = "../projectfiles/"; // Specify the directory where you want to store the uploaded files
+        
+        //
+        $sql = " select * from files_tbl where id = '" . $resData->dId . "'";
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            // delete
+            unlink($targetDirectory . $rowsgetacc->file_name);
+        }
+
+        // 
+        $sql = " delete from files_tbl where id = '" . $resData->dId . "'";
+        $rsgetacc=mysqli_query($connection,$sql);
+
+
+        // result
+        JSONSet("ok", "Delete Success!", "File has been deleted. (" . $resData->dPid . ")");    
+    }
+
+    // file - delete all By Proj Id
+    // ----------------------
+    if ($_GET['mode'] == 'filedelete2all')
+    {
+        $resData = JSONGet();
+
+        $targetDirectory = "../projectfiles/"; // Specify the directory where you want to store the uploaded files
+        
+        //
+        $sql = " select * from files_tbl where file_projid = '" . $resData->dPid . "'";
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            // delete
+            unlink($targetDirectory . $rowsgetacc->file_name);
+        }
+
+        // 
+        $sql = " delete from files_tbl where file_projid = '" . $resData->dPid . "'";
+        $rsgetacc=mysqli_query($connection,$sql);
+
+        // result
+        JSONSet("ok", "Delete Success!", "All files associated with this project has been deleted. (" . $resData->dId . ")");
     }
 
 
@@ -272,51 +862,42 @@
         FUNCTIONS
         ======================================
     */
-    // Result Handler
+
+    // JSON - Get
     // ---------------------------------------
-    function ResultJSON($resStatus, $resMsg, $resData = "")
+    function JSONGet()
+    {
+        // get json
+        $json = file_get_contents('php://input');
+        $data = json_decode($json);
+
+        // sanitize?
+        {
+            sanitize_array($data);
+        }
+
+        return $data;
+    }
+
+    // JSON - Set     
+    // ---------------------------------------
+    function JSONSet($resStatus, $resTitle = "", $resMsg = "", $resData = "")
     {
         /*
             status:
                 ok      - success
                 error   - error
 
+            title:
+                return any notif title
+
             message:
-                return any notif
+                return any notif msg
             
             data:
                 return any result
         */
-        echo json_encode(array("status" => $resStatus, "message" => $resMsg, "data" => $resData));
-        exit();
-    }
-
-    // Req
-    // ---------------------------------------
-    function RequestData($url)
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        $responseObj = json_decode($response);
-        
-        return $responseObj;
-    }
-
-    // OK
-    // ---------------------------------------
-    function ResultOK($errMsg = "", $errData = "")
-    {
-        echo "ok#" . $errMsg . "#" . $errData;
-        exit();
-    }
-
-    // Error
-    // ---------------------------------------
-    function ResultError($errMsg = "")
-    {
-        echo "error#" . $errMsg;
+        echo json_encode(array("status" => $resStatus, "title" => $resTitle, "message" => $resMsg, "data" => $resData));
         exit();
     }
 
@@ -324,6 +905,36 @@
     // ---------------------------------------
     function GUID()
     {
-        return strtoupper(substr(uniqid(), -6));
+        if (function_exists('com_create_guid') === true)
+        {
+            return trim(com_create_guid(), '{}');
+        }
+
+        return sprintf('%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535));
+    }
+
+    // Sanitize
+    // ---------------------------------------
+    function sanitize_string($string) {
+        // Remove any characters that could be used to inject SQL code
+        $string = str_replace("'", "", $string);
+        $string = str_replace("`", "", $string);
+        $string = str_replace("\"", "", $string);
+        $string = str_replace("\\", "", $string);
+        $string = str_replace("*", "", $string);
+        $string = str_replace("%", "", $string);
+        $string = str_replace(";", "", $string);
+        $string = strip_tags($string);
+        return $string;
+    }
+
+    function sanitize_array(&$array) {
+        foreach ($array as &$item) {
+            if (is_array($item)) {
+                sanitize_array($item);
+            } else if (is_string($item)) {
+                $item = sanitize_string($item);
+            }
+        }
     }
 ?>
