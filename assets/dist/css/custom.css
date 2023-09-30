@@ -554,3 +554,13 @@ li > a {
 .d-none {
     display: none;
 }
+
+.statistic-box h2 {
+	font-size: 27px;
+}
+
+.statistic-box .statistic_icon {
+	font-size: 27px;
+	right: 8px;
+	top: 8px;
+}

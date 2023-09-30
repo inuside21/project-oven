@@ -31,7 +31,7 @@
 
         // login
         $sql="select * FROM user_tbl where binary user_uname = '" . $_POST['uuname'] . "' and binary user_pword = '" . $_POST['upword'] . "'"; 
-        $rsgetacc=mysqli_query($connection2,$sql);
+        $rsgetacc=mysqli_query($connection,$sql);
         while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
         {
             // others
@@ -52,7 +52,7 @@
             $tokenNew = GUID();
 
             $sql="update user_tbl set user_token = '" . $tokenNew . "' where id = '" . $rowsgetacc->id . "'"; 
-            $rsupdate=mysqli_query($connection2,$sql);
+            $rsupdate=mysqli_query($connection,$sql);
 
 
             JSONSet("ok", "", "", $tokenNew);
@@ -70,7 +70,7 @@
 
         // login
         $sql="select * FROM user_tbl where user_token = '" . $resData->utoken . "'"; 
-        $rsgetacc=mysqli_query($connection2,$sql);
+        $rsgetacc=mysqli_query($connection,$sql);
         while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
         {
             // others
@@ -106,7 +106,7 @@
         $output = 0;
 
         // login
-        $sql="select count(*) as resCount FROM project_tbl where proj_status = '0' and proj_status = '1'"; 
+        $sql="select count(*) as resCount FROM oven_tbl"; 
         $rsgetacc=mysqli_query($connection,$sql);
         while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
         {
@@ -231,22 +231,6 @@
             {
                 JSONSet("error", "Adding Failed", "Username already exist.");
             }
-
-            // email
-            $sql="select * FROM user_tbl where binary user_email = '" . $resData->rEmail . "' and user_archive != 1"; 
-            $rsgetacc=mysqli_query($connection,$sql);
-            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-            {
-                JSONSet("error", "Adding Failed", "Email already exist.");
-            }
-
-            // contact
-            $sql="select * FROM user_tbl where binary user_contact = '" . $resData->rContact . "' and user_archive != 1"; 
-            $rsgetacc=mysqli_query($connection,$sql);
-            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-            {
-                JSONSet("error", "Adding Failed", "Contact already exist.");
-            }
         }
 
         // login
@@ -257,10 +241,7 @@
                     user_pos,
                     user_uname,
                     user_pword,
-                    user_fname,
-                    user_contact,
-                    user_email,
-                    user_address
+                    user_fname
                 )
             values
                 (
@@ -269,10 +250,7 @@
                     '" . $resData->rAccess. "',
                     '" . $resData->rUname . "',
                     '" . $resData->rPword . "',
-                    '" . $resData->rFname . "',
-                    '" . $resData->rContact . "',
-                    '" . $resData->rEmail . "',
-                    '" . $resData->rAddress . "'
+                    '" . $resData->rFname . "'
                 )"; 
         $rsgetacc=mysqli_query($connection,$sql);
 
@@ -316,22 +294,6 @@
             {
                 JSONSet("error", "Update Failed", "Username already exist.");
             }
-
-            // email
-            $sql="select * FROM user_tbl where binary user_email = '" . $resData->rEmail . "' and id != '" . $resData->rId  . "' and user_archive != 1"; 
-            $rsgetacc=mysqli_query($connection,$sql);
-            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-            {
-                JSONSet("error", "Update Failed", "Email already exist.");
-            }
-
-            // contact
-            $sql="select * FROM user_tbl where binary user_contact = '" . $resData->rContact . "' and id != '" . $resData->rId  . "' and user_archive != 1"; 
-            $rsgetacc=mysqli_query($connection,$sql);
-            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-            {
-                JSONSet("error", "Update Failed", "Contact already exist.");
-            }
         }
 
         // login
@@ -340,10 +302,7 @@
                     user_pos = '" . $resData->rAccess. "',
                     user_uname = '" . $resData->rUname. "',
                     user_pword = '" . $resData->rPword. "',
-                    user_fname = '" . $resData->rFname. "',
-                    user_contact = '" . $resData->rContact. "',
-                    user_email = '" . $resData->rEmail. "',
-                    user_address = '" . $resData->rAddress. "'
+                    user_fname = '" . $resData->rFname. "'
                 where
                     id = '" . $resData->rId . "'
         "; 
@@ -417,30 +376,12 @@
 
         // check exist
         {
-            // email
-            $sql="select * FROM user_tbl where binary user_email = '" . $resData->rEmail . "' and id != '" . $resData->rId  . "' and user_archive != 1"; 
-            $rsgetacc=mysqli_query($connection,$sql);
-            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-            {
-                JSONSet("error", "Update Failed", "Email already exist.");
-            }
-
-            // contact
-            $sql="select * FROM user_tbl where binary user_contact = '" . $resData->rContact . "' and id != '" . $resData->rId  . "' and user_archive != 1"; 
-            $rsgetacc=mysqli_query($connection,$sql);
-            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-            {
-                JSONSet("error", "Update Failed", "Contact already exist.");
-            }
+            
         }
 
         // login
         $sql="  update user_tbl set
-                    user_pword = '" . $resData->rPword. "',
-                    user_fname = '" . $resData->rFname. "',
-                    user_contact = '" . $resData->rContact. "',
-                    user_email = '" . $resData->rEmail. "',
-                    user_address = '" . $resData->rAddress. "'
+                    user_pword = '" . $resData->rPword. "'
                 where
                     id = '" . $resData->rId . "'
         "; 
@@ -449,6 +390,331 @@
         // result
         JSONSet("ok", "Update Success!", "Account updated successfully.");
     }
+
+
+
+    // Oven Add
+    // ----------------------
+    if ($_GET['mode'] == 'ovenadd')
+    {
+        $resData = JSONGet();
+
+        // check
+        {
+            if ($resData->oName == "")
+            {
+                JSONSet("error", "Add Failed", "Name must not empty.");
+            }
+        }
+
+        // check image
+        {
+            /*
+            // create image name
+            $imageName = GUID() . ".png";
+            $imagemptyName = "none.png";
+
+            try 
+            {
+                if ($resData->rImage != "")
+                {
+                    $imageConvert = base64_decode($resData->rImage);
+
+                    // check
+                    if (getimagesizefromstring($imageConvert) !== false) 
+                    {
+                        file_put_contents("../files/images/" . $imageName, $imageConvert);
+                    }   
+                    else
+                    {
+                        $imageName = $imagemptyName;
+                    }
+                }
+                else
+                {
+                    $imageName = $imagemptyName;
+                }
+            }
+            catch (Exception $e)
+            {
+                $imageName = $imagemptyName;
+            }
+            */
+        }
+
+        // item
+        {
+            $sql="insert into oven_tbl
+                    (
+                        oven_name
+                    )
+                values
+                    (
+                        '" . $resData->oName . "'
+                    )"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            $itemId = mysqli_insert_id($connection);
+        }
+
+        // result
+        JSONSet("ok", "Add Success!", "New oven detail added successfully.");
+    }
+
+    // Oven Edit
+    // ----------------------
+    if ($_GET['mode'] == 'ovenedit')
+    {
+        $resData = JSONGet();
+
+        // check
+        {
+            if ($resData->oName == "")
+            {
+                JSONSet("error", "Update Failed", "Name must not empty.");
+            }
+        }
+
+        // check image
+        {
+            /*
+            // create image name
+            $imageName = GUID() . ".png";
+            $imagemptyName = "none.png";
+
+            try 
+            {
+                if ($resData->rImage != "")
+                {
+                    $imageConvert = base64_decode($resData->rImage);
+
+                    // check
+                    if (getimagesizefromstring($imageConvert) !== false) 
+                    {
+                        file_put_contents("../files/images/" . $imageName, $imageConvert);
+                    }   
+                    else
+                    {
+                        $imageName = $imagemptyName;
+                    }
+                }
+                else
+                {
+                    $imageName = $imagemptyName;
+                }
+            }
+            catch (Exception $e)
+            {
+                $imageName = $imagemptyName;
+            }
+            */
+        }
+
+        // item
+        { 
+            $sql="  update oven_tbl set
+                        oven_name = '" . $resData->oName . "'
+                    where
+                        id = '" . $resData->rId . "'
+            "; 
+            $rsgetacc=mysqli_query($connection,$sql);
+        }
+
+        // result
+        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+    }
+
+    // Oven Delete
+    // ----------------------
+    if ($_GET['mode'] == 'ovendelete')
+    {
+        $resData = JSONGet();
+
+        $sql="delete from oven_tbl where id = '" . $resData->dOven->id . "'"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+
+        // result
+        JSONSet("ok", "Delete Success!", "Oven detail has been removed successfully.");
+    }
+
+    // Oven List
+    // ----------------------
+    if ($_GET['mode'] == 'ovenlist')
+    {
+        $resData = JSONGet();
+
+        // set
+        $resList = array();  
+
+        // login
+        $sql="select * FROM oven_tbl order by id desc"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            // other
+            {
+                //
+                if ($rowsgetacc->oven_status == "0")
+                {
+                    $rowsgetacc->oven_status = "IDLE";
+                }
+
+                //
+                if ($rowsgetacc->oven_status == "1")
+                {
+                    $rowsgetacc->oven_status = "RUNNING";
+                }
+
+                //
+                if ($rowsgetacc->oven_status == "2")
+                {
+                    $rowsgetacc->oven_status = "COMPLETE";
+                }
+
+                //
+                if ((int)$rowsgetacc->oven_connected < strtotime($dateResult))
+                {
+                    $rowsgetacc->oven_connected = "OFFLINE";
+                }
+
+                //
+                if ((int)$rowsgetacc->oven_connected >= strtotime($dateResult))
+                {
+                    $rowsgetacc->oven_connected = "ONLINE";
+                }
+            }
+
+            $resList[] = $rowsgetacc;
+        }
+
+        JSONSet("ok", "", $sql, $resList);
+    }
+
+    // Oven Log List
+    // ----------------------
+    if ($_GET['mode'] == 'ovenloglist')
+    {
+        $resData = JSONGet();
+
+        // set
+        $resList = array();  
+
+        // login
+        $sql="select * FROM oven_log_tbl where oven_id = '" . $_GET['oid'] . "' order by id desc limit 1000"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            // other
+            {
+
+            }
+
+            $resList[] = $rowsgetacc;
+        }
+
+        JSONSet("ok", "", $sql, $resList);
+    }
+
+    // Oven View
+    // ----------------------
+    if ($_GET['mode'] == 'ovenview')
+    {
+        $resData = JSONGet();
+
+        // check exist
+        {
+            $sql="select * FROM oven_tbl where id = '" . $resData->reqid . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                // other
+                {
+                    //
+                    if ($rowsgetacc->oven_lock == "0")
+                    {
+                        $rowsgetacc->oven_lock = "LOCKED";
+                    }
+
+                    if ($rowsgetacc->oven_lock == "1")
+                    {
+                        $rowsgetacc->oven_lock = "OPEN";
+                    }
+
+
+                    //
+                    if ($rowsgetacc->oven_status == "0")
+                    {
+                        $rowsgetacc->oven_status = "IDLE";
+                    }
+
+                    if ($rowsgetacc->oven_status == "1")
+                    {
+                        $rowsgetacc->oven_status = "RUNNING";
+                    }
+
+                    if ($rowsgetacc->oven_status == "2")
+                    {
+                        $rowsgetacc->oven_status = "COMPLETE";
+                    }
+
+
+                    //
+                    if ((int)$rowsgetacc->oven_connected < strtotime($dateResult))
+                    {
+                        $rowsgetacc->oven_connected = "OFFLINE";
+                    }
+
+                    if ((int)$rowsgetacc->oven_connected >= strtotime($dateResult))
+                    {
+                        $rowsgetacc->oven_connected = "ONLINE";
+                    }
+                }
+
+                // result
+                JSONSet("ok", "", $resData->reqid, $rowsgetacc);
+            }
+        }
+
+        // result
+        JSONSet("error", "", "");
+    }
+
+
+    // Oven Timer Hour Up Edit
+    // ----------------------
+    if ($_GET['mode'] == 'oventimerhourupedit')
+    {
+        $resData = JSONGet();
+
+        // item
+        { 
+            $sql="  update oven_tbl set
+                        oven_name = '" . $resData->oName . "'
+                    where
+                        id = '" . $resData->rId . "'
+            "; 
+            $rsgetacc=mysqli_query($connection,$sql);
+        }
+
+        // result
+        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // project - add
@@ -627,7 +893,7 @@
         // login
         $userData = new stdClass();
         $sql="select * FROM user_tbl where id = '" . $_GET['uid'] . "'"; 
-        $rsgetacc=mysqli_query($connection2,$sql);
+        $rsgetacc=mysqli_query($connection,$sql);
         while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
         {
             $userData = $rowsgetacc;

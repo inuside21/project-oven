@@ -129,7 +129,7 @@
                             <i class=pe-7s-display1></i>
                         </div>
                         <div class=header-title>
-                            <h1>Project - Filesystem Dashboard</h1>
+                            <h1>Dashboard</h1>
                             <small>Navigate left menu to view or modify app content</small>
                             <ol class=breadcrumb>
                                 <li class=active><a href=dashboard.php><i class=pe-7s-home></i> Home</a></li>
@@ -137,33 +137,13 @@
                         </div>
                     </div>
 
-                    <div class="row d-none">
+                    <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                            <a href="projlist.php?s=0">
+                            <a href="">
                                 <div class="statistic-box statistic-filled-3">
                                     <h2><span class="count-number1" id="count-number1">---</span><span class="slight"></span></h2>
-                                    <div class="small">Total Projects</div>
+                                    <div class="small">Total Oven</div>
                                     <i class="ti-check-box statistic_icon"></i>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                            <a href="projlist.php?s=1">
-                                <div class="statistic-box statistic-filled-4">
-                                    <h2><span class="count-number1" id="count-number2">---</span><span class="slight"></span></h2>
-                                    <div class="small">Total Ongoing Project</div>
-                                    <i class="ti-reload statistic_icon"></i>
-                                </div>
-                            </a>
-                        </div>
-
-                        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                            <a href="projlist.php?sd">
-                                <div class="statistic-box statistic-filled-2">
-                                    <h2><span class="count-number1" id="count-number3">---</span><span class="slight"></span></h2>
-                                    <div class="small">Total Due Project</div>
-                                    <i class="ti-reload statistic_icon"></i>
                                 </div>
                             </a>
                         </div>
@@ -251,8 +231,6 @@
             //LoadChart1();
             //LoadChart2();
             LoadDataDashboard1();
-            LoadDataDashboard2();
-            LoadDataDashboard3();
             
             
             // Loop
@@ -658,62 +636,6 @@
                         {
                             // display
                             $('#count-number1').text(result.data);
-                        }
-                        else
-                        {
-                            //window.location.href = "aitemlist.php";
-                        }
-                    },
-                    error: function(data) {
-                        //window.location.href = "aitemlist.php";
-                    }
-                });
-            }
-
-            // Load Dashboard 2
-            function LoadDataDashboard2()
-            {
-                $.ajax({
-                    type: "POST",
-                    url: "server/api.php?mode=dashboard2",
-                    data: {},
-                    success: function(data) {
-                        // result
-                        const result = JSON.parse(data);
-
-                        // check
-                        if (result.status == "ok")
-                        {
-                            // display
-                            $('#count-number2').text(result.data);
-                        }
-                        else
-                        {
-                            //window.location.href = "aitemlist.php";
-                        }
-                    },
-                    error: function(data) {
-                        //window.location.href = "aitemlist.php";
-                    }
-                });
-            }
-
-            // Load Dashboard 3
-            function LoadDataDashboard3()
-            {
-                $.ajax({
-                    type: "POST",
-                    url: "server/api.php?mode=dashboard3",
-                    data: {},
-                    success: function(data) {
-                        // result
-                        const result = JSON.parse(data);
-
-                        // check
-                        if (result.status == "ok")
-                        {
-                            // display
-                            $('#count-number3').text(result.data);
                         }
                         else
                         {

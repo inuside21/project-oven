@@ -80,38 +80,42 @@
                 <div class=content>
                     <div class=content-header>
                         <div class=header-icon>
-                            <i class=pe-7s-box1></i>
+                            <i class=pe-7s-users></i>
                         </div>
                         <div class=header-title>
-                            <h1>Project List</h1>
-                            <small>List of all project</small>
+                            <h1>User</h1>
+                            <small>List of all user</small>
                             <ol class=breadcrumb>
                                 <li class=active><a href=dashboard.php><i class=pe-7s-home></i> Home</a></li>
                             </ol>
                         </div>
                     </div>
+
+                    <div class="row text-right">
+                        <a href="auseradd.php">
+                            <button type="button" class="btn btn-labeled btn-danger m-b-5">
+                                <span class="btn-label"><i class="glyphicon glyphicon-plus"></i></span>Add New User
+                            </button>
+                        </a>
+                    </div>
                     
                     <div class=row>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
                             <div class=row>
                                 <div class="panel panel-danger">
                                     <div class="panel-heading">
                                         <div class="panel-title">
-                                            <h4>Project List</h4> <br>
-                                            <h5>Click on item name to view details</h5>
+                                            <h4>User List</h4> <br>
+                                            <h5>View / Update in control section</h5>
                                         </div>
                                     </div>
                                     <div class="panel-body">
                                         <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Type</th>
-                                                    <th>Name</th>
-                                                    <th>Dept.</th>
-                                                    <th>Customer</th>
-                                                    <th>PO #</th>
-                                                    <th>Date</th>
-                                                    <th>Status</th>
+                                                    <th>Full Name</th>
+                                                    <th>Access Type</th>
+                                                    <th>Control</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -146,13 +150,12 @@
 
             // Variables
             // ===========================
-            const params = new URLSearchParams(window.location.search);
-            const getId = params.get('d');
-            
+
 
             // Start
             // ===========================
             LoadUser();
+            LoadTable();
             
             
             // Loop
@@ -186,8 +189,6 @@
                                 $('[id="isadmin"]').hide();
                                 //window.location.href = "dashboard.php";
                             }
-
-                            LoadTable(result.data.id);
                         }
                         else
                         {
@@ -207,74 +208,33 @@
             });
 
             // Load Table
-            function LoadTable(uid)
-            {   
+            function LoadTable()
+            {
                 $("#dataTableExample1").DataTable({
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'excel'
-                    ],
                     aaSorting: [],
                     ajax: {
-                        url: 'server/api.php?mode=projlist4&uid=' + encodeURIComponent(uid),
+                        url: 'server/api.php?mode=guserlist',
                         dataSrc: 'data',
                     },
                     columns: [
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return data.proj_type.toUpperCase();
+                                return '<b>' + data.user_fname + '</b>';
                             } 
                         },
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return '<center><a href="projview.php?id=' + data.id + '"><h4><b>' + data.proj_name + '</b></h4></a><center>';
+                                return '<b>' + data.user_pos + '</b>';
                             } 
                         },
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return data.proj_dept.toUpperCase();
+                                return '<center><a href="auserview.php?id=' + data.id + '">View</a></center>';
                             } 
-                        },
-                        { 
-                            data: null, 
-                            render: function ( data, type, row, meta ) {
-                                return data.proj_clientText + " <br> " + data.proj_companyText;
-                            } 
-                        },
-                        { 
-                            data: null, 
-                            render: function ( data, type, row, meta ) {
-                                return data.proj_po.toUpperCase();
-                            } 
-                        },
-                        { 
-                            data: null, 
-                            render: function ( data, type, row, meta ) {
-                                return data.proj_date;
-                            } 
-                        },
-                        { 
-                            data: null, 
-                            render: function ( data, type, row, meta ) {
-                                if (data.proj_status == "0")
-                                {
-                                    return '<center><span class="label label-pill label-warning">Active</span> <span class="label label-pill label-info">' + data.proj_phaseText + '</span></center>';
-                                }
-
-                                if (data.proj_status == "1")
-                                {
-                                    return '<center><span class="label label-pill label-success">Completed</span> <span class="label label-pill label-info">' + data.proj_phaseText + '</span></center>';
-                                }
-
-                                if (data.proj_status == "2")
-                                {
-                                    return '<center><span class="label label-pill label-danger">Cancelled</span> <span class="label label-pill label-info">' + data.proj_phaseText + '</span></center>';
-                                }
-                            } 
-                        },
+                        }
                     ]
                 });
             }

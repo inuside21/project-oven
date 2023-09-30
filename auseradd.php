@@ -80,10 +80,10 @@
                 <div class=content>
                     <div class=content-header>
                         <div class=header-icon>
-                            <i class=pe-7s-user></i>
+                            <i class=pe-7s-users></i>
                         </div>
                         <div class=header-title>
-                            <h1>Update: <b><span id="dName"></span></b></h1>
+                            <h1>Add User</h1>
                             <small>Navigate left menu to view or modify app content</small>
                             <ol class=breadcrumb>
                                 <li class=active><a href=dashboard.php><i class=pe-7s-home></i> Home</a></li>
@@ -106,8 +106,8 @@
                                     <div class="panel panel-danger">
                                         <div class="panel-heading">
                                             <div class="panel-title">
-                                                <h4>Account Information</h4> <br>
-                                                <h5>General information of the account</h5>
+                                                <h4>User Information</h4> <br>
+                                                <h5>General information of the user</h5>
                                             </div>
                                         </div>
                                         <div class="panel-body">
@@ -122,13 +122,31 @@
                                                     <div class="form-group row">
                                                         <label for="example-text-input" class="col-sm-2 col-form-label">Username</label>
                                                         <div class="col-sm-10">
-                                                            <input class="form-control" type="text" id="rUname" name="rUname" autocorrect="off" autocapitalize="none" disabled>
+                                                            <input class="form-control" type="text" id="rUname" name="rUname" autocorrect="off" autocapitalize="none">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label for="example-text-input" class="col-sm-2 col-form-label">Password</label>
                                                         <div class="col-sm-10">
                                                             <input class="form-control" type="text" id="rPword" name="rPword" autocorrect="off" autocapitalize="none">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Access Type</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control" id="rAccess" name="rAccess">
+                                                                <option value=0 selected>Normal Access</option>
+                                                                <option value=1>Administrator</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Account Disable?</label>
+                                                        <div class="col-sm-10">
+                                                            <select class="form-control" id="rBlock" name="rBlock">
+                                                                <option value=0 selected>No</option>
+                                                                <option value=1>Yes</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
@@ -150,7 +168,6 @@
                             </div>
                         </div>
                     </form>
-
 
                 </div>
             </div>
@@ -175,10 +192,6 @@
 
             // Variables
             // ===========================
-            const params = new URLSearchParams(window.location.search);
-            var getId = "";
-            
-            var getReqDataUser;
 
 
             // Start
@@ -240,7 +253,7 @@
                             type: "POST",
                             contentType: false,
                             processData: false,
-                            url: "server/api.php?mode=guseredit2",
+                            url: "server/api.php?mode=guseradd",
                             data: JSON.stringify(formData),
                             beforeSend: function() {
                                 // button
@@ -296,9 +309,6 @@
                         // check
                         if (result.status == "ok")
                         {
-                            // set
-                            getId = result.data.id;
-
                             // display
                             $('#userFname').text(result.data.user_fname.toUpperCase());
 
@@ -308,8 +318,6 @@
                                 $('[id="isadmin"]').hide();
                                 //window.location.href = "dashboard.php";
                             }
-
-                            LoadDataUser();
                         }
                         else
                         {
@@ -327,44 +335,6 @@
                 localStorage.setItem("tokenId", "");
                 window.location.href = "login.php";
             });
-
-            function LoadDataUser()
-            {
-                $.ajax({
-                    type: "POST",
-                    url: "server/api.php?mode=guserview",
-                    data: JSON.stringify({
-                        "reqid": getId,
-                    }),
-                    success: function(data) {
-                        // result
-                        const result = JSON.parse(data);
-                        console.log(result)
-
-                        // check
-                        if (result.status == "ok")
-                        {
-                            getReqDataUser = result.data;
-                            
-                            // detail
-                            $('#dName').text(getReqDataUser.user_fname);
-
-                            // form
-                            $('#rId').val(getReqDataUser.id);
-                            $('#rUname').val(getReqDataUser.user_uname);
-                            $('#rPword').val(getReqDataUser.user_pword);
-                            $('#rFname').val(getReqDataUser.user_fname);
-                        }
-                        else
-                        {
-                            window.location.href = "login.php";
-                        }
-                    },
-                    error: function(data) {
-                        window.location.href = "login.php";
-                    }
-                });
-            }
         </script>
     </body>
 </html>

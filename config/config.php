@@ -1,5 +1,4 @@
 <?php
-
     // database
     // =========================================================
     // Declare
@@ -17,7 +16,7 @@
     $_SESSION['mainUrl'] = "";
 
     // Content
-    $contentPageTitle = "EETech FileSystem";
+    $contentPageTitle = "PTC App";
     $contentPageLogoSmall = "";
     $contentPageLogoLarge = "";
 
@@ -137,7 +136,14 @@
                 <ul class=nav id=side-menu>
                     <li class="nav-heading "> <span>Main Navigation</span></li>
                     <li class=active><a href=dashboard.php class=material-ripple><i class=material-icons>home</i> Dashboard</a></li>
-                    <li><a href="projlist.php" class=material-ripple><i class=material-icons>assignment</i> Project List</a></li>
+
+                    <li class="nav-heading "> <span>Oven</span></li>
+                    <li><a href="ovenlist.php" class=material-ripple><i class=material-icons>assignment</i> Oven List</a></li>
+                    <li><a href="ovenadd.php" class=material-ripple><i class=material-icons>assignment</i> Oven Add</a></li>
+
+                    <li class="nav-heading "> <span>Accounts</span></li>
+                    <li><a href=auserlist.php class=material-ripple><i class=material-icons>home</i> Account List</a></li>
+                    <li><a href=auseradd.php class=material-ripple><i class=material-icons>home</i> Account Add</a></li>
 
                     <li class="nav-heading "> <span>User</span></li>
                     <li><a href="#" class=material-ripple id="uLogout"><i class=material-icons>keyboard_backspace</i> Logout</a></li>
@@ -146,72 +152,4 @@
         </div>
         <div class=control-sidebar-bg></div>
     ';
-
-    
-    // department
-    $getDepartmentList = array();
-    $getDepartmentListByName = array();
-    $sql="select * FROM department_tbl"; 
-    $rsgetacc=mysqli_query($connection,$sql);
-    while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-    {
-        $getDepartmentList[] = $rowsgetacc;
-        $getDepartmentListByName[$rowsgetacc->dept_name] = $rowsgetacc;
-    }
-
-    // company
-    $getCompanyList = array();
-    $getCompanyListById = array();
-    $sql="select * FROM company_tbl"; 
-    $rsgetacc=mysqli_query($connection,$sql);
-    while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-    {
-        $getCompanyList[] = $rowsgetacc;
-        $getCompanyListById[$rowsgetacc->id] = $rowsgetacc;
-    }
-
-    // customer
-    $getCustomerList = array();
-    $getCustomerListById = array();
-    $sql="select * FROM customer_tbl"; 
-    $rsgetacc=mysqli_query($connection,$sql);
-    while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-    {
-        //
-        $rowsgetacc->companyName = $getCompanyListById[$rowsgetacc->cust_companyid]->company_name;
-
-        //
-        $getCustomerList[] = $rowsgetacc;
-        $getCustomerListById[$rowsgetacc->id] = $rowsgetacc;
-    }
-
-    // sales
-    $getSalesList = array();
-    $getSalesListById = array();
-    $sql="select * FROM user_tbl where user_dept = 'sales'"; 
-    $rsgetacc=mysqli_query($connection,$sql);
-    while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-    {
-        //
-        $getSalesList[] = $rowsgetacc;
-        $getSalesListById[$rowsgetacc->id] = $rowsgetacc;
-    }
-
-    // project - status
-    $getProjStatusList = [
-        "Active",
-        "Completed",
-        "Cancelled"
-    ];
-
-    // project - phase
-    $getProjPhaseList = array();
-    $getProjPhaseListById = array();
-    $sql="select * FROM project_phase_tbl"; 
-    $rsgetacc=mysqli_query($connection,$sql);
-    while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-    {
-        $getProjPhaseList[] = $rowsgetacc;
-        $getProjPhaseListById[$rowsgetacc->id] = $rowsgetacc;
-    }
 ?>

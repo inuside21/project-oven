@@ -188,16 +188,90 @@
             <!-- Main Content -->
             <div id=page-wrapper>
                 <div class=content>
-                    <div class=content-header>
-                        <div class=header-icon>
-                            <i class=pe-7s-box1></i>
+
+                <br>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                            <a>
+                                <div class="statistic-box statistic-filled-3">
+                                    <h2><span class="count-number1" id="count-numberTemp">---</span><span class="slight"></span></h2>
+                                    <div class="small">Temperature</div>
+                                    <i class="ti-check-box statistic_icon"></i>
+                                </div>
+                            </a>
                         </div>
-                        <div class=header-title>
-                            <h1>View: <b><span id="dName"></span></b></h1>
-                            <small>Navigate left menu to view or modify app content</small>
-                            <ol class=breadcrumb>
-                                <li class=active><a href=dashboard.php><i class=pe-7s-home></i> Home</a></li>
-                            </ol>
+
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                            <a>
+                                <div class="statistic-box statistic-filled-3">
+                                    <h2><span class="count-number1" id="count-numberCurrent">---</span><span class="slight"></span></h2>
+                                    <div class="small">Current</div>
+                                    <i class="ti-check-box statistic_icon"></i>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                            <a>
+                                <div class="statistic-box statistic-filled-3">
+                                    <h2><span class="count-number1" id="count-numberKwh">---</span><span class="slight"></span></h2>
+                                    <div class="small">KWH</div>
+                                    <i class="ti-check-box statistic_icon"></i>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                            <a>
+                                <div class="statistic-box statistic-filled-3">
+                                    <h2><span class="count-number1" id="count-numberConnection">---</span><span class="slight"></span></h2>
+                                    <div class="small">Connection</div>
+                                    <i class="ti-check-box statistic_icon"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                            <a>
+                                <div class="statistic-box statistic-filled-3">
+                                    <h2><span class="count-number1" id="count-numberOperation">---</span><span class="slight"></span></h2>
+                                    <div class="small">Operation</div>
+                                    <i class="ti-check-box statistic_icon"></i>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" id="cMenuTimerBtn">
+                            <a>
+                                <div class="statistic-box statistic-filled-3">
+                                    <h2><span class="count-number1" id="count-numberTimer">---</span><span class="slight"></span></h2>
+                                    <div class="small">Timer</div>
+                                    <i class="ti-check-box statistic_icon"></i>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                            <a>
+                                <div class="statistic-box statistic-filled-3">
+                                    <h2><span class="count-number1" id="count-numberStock">---</span><span class="slight"></span></h2>
+                                    <div class="small">Stock</div>
+                                    <i class="ti-check-box statistic_icon"></i>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                            <a>
+                                <div class="statistic-box statistic-filled-3">
+                                    <h2><span class="count-number1" id="count-numberLock">---</span><span class="slight"></span></h2>
+                                    <div class="small">Lock</div>
+                                    <i class="ti-check-box statistic_icon"></i>
+                                </div>
+                            </a>
                         </div>
                     </div>
 
@@ -222,13 +296,13 @@
                                 </div>
                             </div>
 
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class=row>
                                     <div class="panel panel-danger">
                                         <div class="panel-heading">
                                             <div class="panel-title">
-                                                <h4>Project Information</h4> <br>
-                                                <h5>General information of the project</h5>
+                                                <h4>Oven Information</h4> <br>
+                                                <h5>General information of the oven</h5>
                                             </div>
                                         </div>
                                         <div class="panel-body">
@@ -251,126 +325,9 @@
                                                     </div>
                                                     
                                                     <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Project Name</label>
+                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Oven Name</label>
                                                         <div class="col-sm-10">
-                                                            <input class="form-control" type="text" id="pName" name="pName">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row d-none">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Details</label>
-                                                        <div class="col-sm-10">
-                                                            <textarea class="form-control" type="text" id="pDesc" name="pDesc" maxlength="1000" rows="4"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">PO #</label>
-                                                        <div class="col-sm-10">
-                                                            <input class="form-control" type="text" id="pPo" name="pPo">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Customer</label>
-                                                        <div class="col-sm-10">
-                                                            <select class="form-control" id="pCustomer" name="pCustomer">
-                                                                <?php
-
-                                                                    foreach ($getCustomerList as $dCustomer)
-                                                                    {
-                                                                        echo '<option value="' . $dCustomer->id . '">' . $dCustomer->cust_name . ' - ' . $dCustomer->companyName . '</option>';
-                                                                    }
-
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row d-none">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Contact Person</label>
-                                                        <div class="col-sm-10">
-                                                            <input class="form-control" type="text" id="pCustomerName" name="pCustomerName">
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Department</label>
-                                                        <div class="col-sm-10">
-                                                            <select class="form-control" id="pDept" name="pDept">
-                                                                <?php
-
-                                                                    foreach ($getDepartmentList as $dDepartment)
-                                                                    {
-                                                                        echo '<option value="' . $dDepartment->dept_name . '">' . strtoupper($dDepartment->dept_name) . '</option>';
-                                                                    }
-
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="form-group row"></div>
-                                                    <div class="form-group row"></div>
-                                                    <div class="form-group row"></div>
-                                                    <div class="form-group row"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-                                <div class=row>
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading">
-                                            <div class="panel-title">
-                                                <h4>Project Information</h4> <br>
-                                                <h5>General information of the project</h5>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                    <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Status</label>
-                                                        <div class="col-sm-10">
-                                                            <select class="form-control" id="pStatus" name="pStatus">
-                                                                <option value="0">Active</option>
-                                                                <option value="1">Completed</option>
-                                                                <option value="2">Cancelled</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Phase</label>
-                                                        <div class="col-sm-10">
-                                                            <select class="form-control" id="pPhase" name="pPhase">
-                                                                <?php
-
-                                                                    foreach ($getProjPhaseList as $dProjPhase)
-                                                                    {
-                                                                        echo '<option value="' . $dProjPhase->id . '">' . $dProjPhase->proj_phase_name . '</option>';
-                                                                    }
-
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Project In-Charge</label>
-                                                        <div class="col-sm-10">
-                                                            <input class="form-control" type="text" id="pOic" name="pOic">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Start Date</label>
-                                                        <div class="col-sm-10">
-                                                            <input class="form-control" type="date" id="pDateStart" name="pDateStart">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Target Date</label>
-                                                        <div class="col-sm-10">
-                                                            <input class="form-control" type="date" id="pDateEnd" name="pDateEnd">
+                                                            <input class="form-control" type="text" id="oName" name="oName">
                                                         </div>
                                                     </div>
                                                     
@@ -384,37 +341,24 @@
                         </div>
                     </form>
 
-                    <div class="row text-right">
-                        <a data-toggle="modal" data-target="#modal-danger">
-                            <button type="button" class="btn btn-labeled btn-danger m-b-5">
-                                <span class="btn-label"><i class="glyphicon glyphicon-cloud-upload"></i></span>File Upload
-                            </button>
-                        </a>
-                        <a id="fDeleteTable1">
-                            <button type="button" class="btn btn-labeled btn-danger m-b-5">
-                                <span class="btn-label"><i class="glyphicon glyphicon-trash"></i></span>Delete All
-                            </button>
-                        </a>
-                    </div>
-
                     <div class=row>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <div class=row>
                                 <div class="panel panel-danger">
                                     <div class="panel-heading">
                                         <div class="panel-title">
-                                            <h4>Files List</h4> <br>
-                                            <h5>Click on item name to download</h5>
+                                            <h4>Logs</h4> <br>
+                                            <h5>Logging of this oven</h5>
                                         </div>
                                     </div>
                                     <div class="panel-body">
                                         <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Filename</th>
-                                                    <th>Type</th>
-                                                    <th>Date Added</th>
-                                                    <th>Control</th>
+                                                    <th>Date</th>
+                                                    <th>Temp</th>
+                                                    <th>Current</th>
+                                                    <th>KWH</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -427,22 +371,21 @@
                         </div>
                     </div>
 
-                    <div class="modal fade modal-danger in" id="modal-danger" tabindex="-1" role="dialog">
+                    <div class="modal fade modal-danger in" id="modal-timer" tabindex="-1" role="dialog">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                    <h1 class="modal-title">Upload</h1>
+                                    <h1 class="modal-title"><b style="font-size:80px;"><span id="tTimerMain">00:00:00</span></b><br>HH:MM:SS</h1>
                                 </div>
                                 <div class="modal-body">
-                                    <div class="alert alert-info alert-dismissible" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                        <strong>Note:</strong> 20MB Max each file. Better zip it first.
-                                    </div>
                                     <p>
-                                    <form action="#" class="dropzone" id="dzFrom">
-                                        <div class="fallback">
-                                            <input name="file" type="file" multiple />
+                                    <form id="fInfoTimer" enctype="multipart/form-data">
+                                        <div class="text-center">
+                                            <button type="button" class="btn btn-success" id="tTimerHourUpBtn">+1 Hour</button>
+                                            <button type="button" class="btn btn-success" id="tTimerHourDownBtn">-1 Hour</button>
+                                            <button type="button" class="btn btn-success" id="tTimerMinUpBtn">+1 Minute</button>
+                                            <button type="button" class="btn btn-success" id="tTimerMinDownBtn">-1 Minute</button>
                                         </div>
                                     </form>
 
@@ -474,10 +417,12 @@
                     $(this).width(each_bar_width + '%');
                 });     
 
+                /*
                 $('#pDept').select2();
                 $('#pStatus').select2();
                 $('#pPhase').select2();
                 $('#pCustomer').select2();
+                */
             });
 
 
@@ -486,21 +431,21 @@
             const params = new URLSearchParams(window.location.search);
             const getId = params.get('id');
             
-            var getReqDataProject;
+            var getReqDataOven;
             var table1;
 
 
             // Start
             // ===========================
             LoadUser();
-            LoadDataProject();
             LoadTable();
             
 
             // Loop
             // ===========================
             setInterval(function() {
-                
+                LoadDataOven();
+                table1.ajax.reload();
             }, 1000);
 
 
@@ -551,7 +496,7 @@
                             type: "POST",
                             contentType: false,
                             processData: false,
-                            url: "server/api.php?mode=projedit",
+                            url: "server/api.php?mode=ovenedit",
                             data: JSON.stringify(formData),
                             beforeSend: function() {
                                 // button
@@ -612,9 +557,9 @@
                             type: "POST",
                             contentType: false,
                             processData: false,
-                            url: "server/api.php?mode=projdelete",
+                            url: "server/api.php?mode=ovendelete",
                             data: JSON.stringify({
-                                dProj: getReqDataProject,
+                                dOven: getReqDataOven,
                             }),
                             beforeSend: function() {
                                 // button
@@ -654,75 +599,20 @@
                 );
             });
 
-            // Press - Delete All Table1
-            $('#fDeleteTable1').click(function(e) {
-                // check
-                swal(
-                    {
-                        title: "Are you sure?",
-                        text: "Pressing the Proceed button will REMOVE the data.",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#E5343D",
-                        confirmButtonText: "Proceed",
-                        closeOnConfirm: false
-                    },
-                    function() {
-                        // request
-                        $.ajax({
-                            type: "POST",
-                            contentType: false,
-                            processData: false,
-                            url: "server/api.php?mode=filedelete2all",
-                            data: JSON.stringify({
-                                dPid: getId,
-                            }),
-                            beforeSend: function() {
-                                // button
-                                $('#fButton').toggle();
-                            },
-                            success: function(data) {
-                                // button
-                                $('#fButton').toggle();
-                                
-                                // result
-                                const result = JSON.parse(data);
-                               
-                                // check
-                                if (result.status == "ok")
-                                {
-                                    //message
-                                    swal(result.title, result.message, "success");
-                                    table1.ajax.reload();
-                                }
-                                else
-                                {
-                                    // message
-                                    swal(result.title, result.message, "error");
-                                }
-                            },
-                            error: function(data) {
-                                // button
-                                $('#fButton').toggle();
-
-                                // message
-                                swal("Error!", "Something went wrong. Please try again.", "error");
-                            }
-                        });
-                    }
-                );
+            // Timer
+            $('#cMenuTimerBtn').click(function(e) {
+                $('#modal-timer').modal('show');
             });
 
-            // Press - Delete Table1
-            function filePressDelete(fid)
-            {
+            // Timer
+            $('#tTimerHourUpBtn').click(function(e) {
                 $.ajax({
                     type: "POST",
                     contentType: false,
                     processData: false,
-                    url: "server/api.php?mode=filedelete2",
+                    url: "server/api.php?mode=oventimerhourupedit",
                     data: JSON.stringify({
-                        dId: fid,
+                        dOven: getReqDataOven,
                     }),
                     beforeSend: function() {
                         // button
@@ -738,25 +628,18 @@
                         // check
                         if (result.status == "ok")
                         {
-                            //message
-                            swal(result.title, result.message, "success");
-                            table1.ajax.reload();
+                            
                         }
                         else
                         {
-                            // message
-                            swal(result.title, result.message, "error");
+                            
                         }
                     },
                     error: function(data) {
-                        // button
-                        $('#fButton').toggle();
-
-                        // message
-                        swal("Error!", "Something went wrong. Please try again.", "error");
+                        
                     }
                 });
-            }
+            });
 
 
             // Function
@@ -802,11 +685,11 @@
                 window.location.href = "login.php";
             });
 
-            function LoadDataProject()
+            function LoadDataOven()
             {
                 $.ajax({
                     type: "POST",
-                    url: "server/api.php?mode=projview",
+                    url: "server/api.php?mode=ovenview",
                     data: JSON.stringify({
                         "reqid": getId,
                     }),
@@ -817,39 +700,45 @@
                         // check
                         if (result.status == "ok")
                         {
-                            getReqDataProject = result.data;
+                            getReqDataOven = result.data;
                             
                             // detail
-                            $('#dName').text(getReqDataProject.proj_name);
-                            $('#preview-image').attr('src', 'files/images/' + getReqDataProject.proj_img);
+                            $('#dName').text(getReqDataOven.oven_name);
+                            //$('#preview-image').attr('src', 'files/images/' + getReqDataProject.proj_img);
 
                             // form
-                            $('#rId').val(getReqDataProject.id);
-                            $('#rImageOrig').val(getReqDataProject.proj_img);
-                            $('#pName').val(getReqDataProject.proj_name);
-                            $('#pDesc').val(getReqDataProject.proj_description);
-                            $('#pPo').val(getReqDataProject.proj_po);
-                            $('#pDept').val(getReqDataProject.proj_dept);
-                            $('#pStatus').val(getReqDataProject.proj_status);
-                            $('#pPhase').val(getReqDataProject.proj_phase);
-                            $('#pOic').val(getReqDataProject.proj_oic);
-                            $('#pDateStart').val(getReqDataProject.proj_startdate);
-                            $('#pDateEnd').val(getReqDataProject.proj_enddate);
-                            $('#pCustomer').val(getReqDataProject.proj_clientid);
-                            $('#pCustomerName').val(getReqDataProject.proj_clientcontact);
+                            $('#rId').val(getReqDataOven.id);
+                            //$('#rImageOrig').val(getReqDataOven.proj_img);
+                            $('#oName').val(getReqDataOven.oven_name);
 
+                            //
+                            $('#count-numberTemp').text(getReqDataOven.oven_temp + " °C");
+                            $('#count-numberCurrent').text(getReqDataOven.oven_current + " A");
+                            $('#count-numberKwh').text(getReqDataOven.oven_kwh + " KWH");
+                            $('#count-numberConnection').text(getReqDataOven.oven_connected);
+
+                            $('#count-numberOperation').text(getReqDataOven.oven_status);
+                            $('#count-numberTimer').text(ConvertIntToTimer(getReqDataOven.oven_timer));
+                            $('#count-numberStock').text(getReqDataOven.oven_stock);
+                            $('#count-numberLock').text(getReqDataOven.oven_lock);
+
+                            // timer 
+                            $('#tTimerMain').text(ConvertIntToTimer(getReqDataOven.oven_timermain));
+
+                            /*
                             $('#pDept').trigger('change');
                             $('#pStatus').trigger('change');
                             $('#pPhase').trigger('change');
                             $('#pCustomer').trigger('change');
+                            */
                         }
                         else
                         {
-                            window.location.href = "projlist.php";
+                            window.location.href = "ovenlist.php";
                         }
                     },
                     error: function(data) {
-                        window.location.href = "projlist.php";
+                        window.location.href = "ovenlist.php";
                     }
                 });
             }
@@ -863,36 +752,60 @@
                     ],
                     aaSorting: [],
                     ajax: {
-                        url: 'server/api.php?mode=filelist2&pid=' + getId,
+                        url: 'server/api.php?mode=ovenloglist&oid=' + getId,
                         dataSrc: 'data',
                     },
                     columns: [
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return '<center><a href="projectfiles/' + data.file_name + '"><h4><b>' + data.file_name + '</b></h4></a><center>';
+                                return data.oven_date;
                             } 
                         },
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return data.file_type;
+                                return data.oven_temp + " °C";
                             } 
                         },
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return data.file_date;
+                                return data.oven_current + " A";
                             } 
                         },
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return '<center><span class="label label-pill label-danger" onclick="filePressDelete(' + data.id + ')">Delete</span></center>';
+                                return data.oven_kwh + " KWH";
                             } 
                         },
                     ]
                 });
+            }
+
+
+            // Other
+            // ===========================
+            function ConvertIntToTimer(getVal) 
+            {
+                var thisVal = getVal;
+
+                //
+                if (thisVal > 0)
+                {
+                    var hours = Math.floor(thisVal / 3600);
+                    var minutes = Math.floor((thisVal - (hours * 3600)) / 60);
+                    var seconds = Math.floor(thisVal) - (hours * 3600) - (minutes * 60);
+                    var timeString = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+                    return timeString;
+                }
+
+                //
+                else
+                {
+                    return "00:00:00";
+                }
             }
         </script>
 
