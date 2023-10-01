@@ -679,6 +679,64 @@
     }
 
 
+    // Oven Operation Edit
+    // ----------------------
+    if ($_GET['mode'] == 'ovenoperationedit')
+    {
+        $resData = JSONGet();
+
+        // 
+        {
+            // idle?
+            if ($resData->dOven->oven_status == "IDLE")
+            {
+                $sql="  update oven_tbl set
+                            oven_status = 1,
+                            oven_timer = oven_timermain,
+                            oven_lock = 0
+                        where
+                            id = '" . $resData->dOven->id . "'
+                "; 
+                $rsgetacc=mysqli_query($connection,$sql);
+
+                // result
+                JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+            }
+
+            // running?
+            if ($resData->dOven->oven_status == "RUNNING")
+            {
+                $sql="  update oven_tbl set
+                            oven_status = 2,
+                            oven_timer = 0
+                        where
+                            id = '" . $resData->dOven->id . "'
+                "; 
+                $rsgetacc=mysqli_query($connection,$sql);
+
+                // result
+                JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+            }
+
+            // complete?
+            if ($resData->dOven->oven_status == "COMPLETE")
+            {
+                $sql="  update oven_tbl set
+                            oven_status = 0
+                        where
+                            id = '" . $resData->dOven->id . "'
+                "; 
+                $rsgetacc=mysqli_query($connection,$sql);
+
+                // result
+                JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+            }
+        }
+
+        echo $resData->dOven->oven_status;
+    }
+
+
     // Oven Timer Hour Up Edit
     // ----------------------
     if ($_GET['mode'] == 'oventimerhourupedit')
@@ -688,9 +746,9 @@
         // item
         { 
             $sql="  update oven_tbl set
-                        oven_name = '" . $resData->oName . "'
+                        oven_timermain = oven_timermain + 3600
                     where
-                        id = '" . $resData->rId . "'
+                        id = '" . $resData->dOven->id . "'
             "; 
             $rsgetacc=mysqli_query($connection,$sql);
         }
@@ -699,428 +757,316 @@
         JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // project - add
+    // Oven Timer Hour Down Edit
     // ----------------------
-    if ($_GET['mode'] == 'projadd')
+    if ($_GET['mode'] == 'oventimerhourdownedit')
     {
         $resData = JSONGet();
 
-        // check
-        {
-            if ($resData->pName == "")
-            {
-                JSONSet("error", "Add Failed", "Name must not empty.");
-            }
-        }
-
-        // check image
-        {
-            // create image name
-            $imageName = GUID() . ".png";
-            $imagemptyName = "none.png";
-
-            try 
-            {
-                if ($resData->rImage != "")
-                {
-                    $imageConvert = base64_decode($resData->rImage);
-
-                    // check
-                    if (getimagesizefromstring($imageConvert) !== false) 
-                    {
-                        file_put_contents("../files/images/" . $imageName, $imageConvert);
-                    }   
-                    else
-                    {
-                        $imageName = $imagemptyName;
-                    }
-                }
-                else
-                {
-                    $imageName = $imagemptyName;
-                }
-            }
-            catch (Exception $e)
-            {
-                $imageName = $imagemptyName;
-            }
-        }
-
         // item
-        {
-            $sql="insert into project_tbl
-                    (
-                        proj_userid,
-                        proj_clientid,
-                        proj_clientcontact,
-                        proj_dept,
-                        proj_date,
-                        proj_status,
-                        proj_phase,
-                        proj_startdate,
-                        proj_enddate,
-                        proj_name,
-                        proj_description,
-                        proj_po,
-                        proj_oic,
-                        proj_img
-                    )
-                values
-                    (
-                        '" . $resData->rUid . "',
-                        '" . $resData->pCustomer . "',
-                        '" . $resData->pCustomerName . "',
-                        '" . $resData->pDept . "',
-                        '" . $dateResult . "',
-                        '" . $resData->pStatus . "',
-                        '" . $resData->pPhase . "',
-                        '" . $resData->pDateStart . "',
-                        '" . $resData->pDateEnd . "',
-                        '" . $resData->pName . "',
-                        '" . $resData->pDesc . "',
-                        '" . $resData->pPo . "',
-                        '" . $resData->pOic . "',
-                        '" . $imageName . "'
-                    )"; 
-            $rsgetacc=mysqli_query($connection,$sql);
-            $itemId = mysqli_insert_id($connection);
-        }
-
-        // result
-        JSONSet("ok", "Add Success!", "New project detail added successfully.");
-    }
-
-    // project - edit
-    // ----------------------
-    if ($_GET['mode'] == 'projedit')
-    {
-        $resData = JSONGet();
-
-        $targetDirectory = "../files/images/";
-
-        // check
-        {
-            if ($resData->pName == "")
-            {
-                JSONSet("error", "Update Failed", "Name must not empty.");
-            }
-        }
-
-        /*
-        // check image
-        {
-            // create image name
-            $imageName = GUID() . ".png";
-            $imagemptyName = $resData->rImageOrig;
-
-            try 
-            {
-                if ($resData->rImage != "")
-                {
-                    $imageConvert = base64_decode($resData->rImage);
-
-                    // check
-                    if (getimagesizefromstring($imageConvert) !== false) 
-                    {
-                        file_put_contents("../files/images/" . $imageName, $imageConvert);
-
-                        // delete
-                        unlink($targetDirectory . $resData->rImageOrig);
-                    }   
-                    else
-                    {
-                        $imageName = $imagemptyName;
-                    }
-                }
-                else
-                {
-                    $imageName = $imagemptyName;
-                }
-            }
-            catch (Exception $e)
-            {
-                $imageName = $imagemptyName;
-            }
-        }
-        */
-
-        // item
-        {
-            $sql="update project_tbl set
-                        proj_status = '" . $resData->pStatus . "',
-                        proj_phase = '" . $resData->pPhase . "',
-                        proj_startdate = '" . $resData->pDateStart . "',
-                        proj_enddate = '" . $resData->pDateEnd . "',
-                        proj_oic = '" . $resData->pOic . "'
-                where
-                        id = '" . $resData->rId . "'
+        { 
+            $sql="  update oven_tbl set
+                        oven_timermain = oven_timermain - 3600
+                    where
+                        id = '" . $resData->dOven->id . "' and oven_timermain >= 3600
             "; 
             $rsgetacc=mysqli_query($connection,$sql);
-            $itemId = mysqli_insert_id($connection);
         }
 
         // result
-        JSONSet("ok", "Update Success!", "Project detail updated successfully.");
+        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
     }
 
-    // project - List By Dept Name
+    // Oven Timer Min Up Edit
     // ----------------------
-    if ($_GET['mode'] == 'projlist4')
+    if ($_GET['mode'] == 'oventimerminupedit')
     {
         $resData = JSONGet();
 
-        // set
-        $resList = array();
-
-        // login
-        $userData = new stdClass();
-        $sql="select * FROM user_tbl where id = '" . $_GET['uid'] . "'"; 
-        $rsgetacc=mysqli_query($connection,$sql);
-        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-        {
-            $userData = $rowsgetacc;
+        // item
+        { 
+            $sql="  update oven_tbl set
+                        oven_timermain = oven_timermain + 60
+                    where
+                        id = '" . $resData->dOven->id . "'
+            "; 
+            $rsgetacc=mysqli_query($connection,$sql);
         }
 
-        // user dept?
-        {
-            // upper
-            if ($userData->user_dept == "management" || $userData->user_dept == "sales" || $userData->user_dept == "admin" || $userData->user_dept == "cso")
-            {
-                $sql="select * FROM project_tbl where (proj_type = '0' or proj_type = '4') order by id desc"; 
-            }   
-
-            //
-            else
-            {
-                $sql="select * FROM project_tbl where proj_dept = '" . $userData->user_dept . "' and (proj_type = '0' or proj_type = '4') order by id desc"; 
-            }
-        }   
-
-        // login
-        $rsgetacc=mysqli_query($connection,$sql);
-        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-        {
-            // other
-            {
-                //
-                if ($rowsgetacc->proj_type == "0")
-                {
-                    $rowsgetacc->proj_type = "WITH P.O.";
-                }
-
-                //
-                if ($rowsgetacc->proj_type == "4")
-                {
-                    $rowsgetacc->proj_type = "FOR INQUIRY";
-                }
-
-                //
-                $rowsgetacc->proj_clientText = $getCustomerListById[(int)$rowsgetacc->proj_clientid]->cust_name;
-                $rowsgetacc->proj_companyText = $getCompanyListById[$getCustomerListById[(int)$rowsgetacc->proj_clientid]->cust_companyid]->company_name;
-                $rowsgetacc->proj_phaseText = $getProjPhaseListById[(int)$rowsgetacc->proj_phase]->proj_phase_name;
-            }
-
-            $resList[] = $rowsgetacc;
-        }
-
-        JSONSet("ok", "", $sql, $resList);
+        // result
+        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
     }
 
-    // project - view
+    // Oven Timer Min Down Edit
     // ----------------------
-    if ($_GET['mode'] == 'projview')
+    if ($_GET['mode'] == 'oventimermindownedit')
+    {
+        $resData = JSONGet();
+
+        // item
+        { 
+            $sql="  update oven_tbl set
+                        oven_timermain = oven_timermain - 60
+                    where
+                        id = '" . $resData->dOven->id . "' and oven_timermain >= 60
+            "; 
+            $rsgetacc=mysqli_query($connection,$sql);
+        }
+
+        // result
+        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+    }
+
+    // Oven Stock Edit
+    // ----------------------
+    if ($_GET['mode'] == 'ovenstockedit')
+    {
+        $resData = JSONGet();
+
+        // item
+        { 
+            $sql="  update oven_tbl set
+                        oven_stock = '" . $resData->tStock . "'
+                    where
+                        id = '" . $_GET['oid'] . "'
+            "; 
+            $rsgetacc=mysqli_query($connection,$sql);
+        }
+
+        // result
+        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+    }
+
+    // Oven Lock Edit
+    // ----------------------
+    if ($_GET['mode'] == 'ovenlockedit')
+    {
+        $resData = JSONGet();
+
+        $lockVal = 0;
+        if ($resData->dOven->oven_lock == "LOCKED")
+        {
+            $lockVal = 1;
+        }
+        else
+        {
+            $lockVal = 0;
+        }
+
+        // item
+        { 
+            $sql="  update oven_tbl set
+                        oven_lock = '" . $lockVal . "'
+                    where
+                        id = '" . $resData->dOven->id . "'
+            "; 
+            $rsgetacc=mysqli_query($connection,$sql);
+        }
+
+        // result
+        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully." . $resData->dOven->oven_lock);
+    }
+
+
+
+    // ards
+    // Oven View
+    // ----------------------
+    if ($_GET['mode'] == 'getstatus')
     {
         $resData = JSONGet();
 
         // check exist
         {
-            $sql="select * FROM project_tbl where id = '" . $resData->reqid . "'"; 
+            $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
             $rsgetacc=mysqli_query($connection,$sql);
             while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
             {
-                // result
-                JSONSet("ok", "", "", $rowsgetacc);
+                echo $rowsgetacc->oven_status;
             }
         }
+    } 
 
-        // result
-        JSONSet("error", "", "");
-    }
-
-    // project - delete
+    // ards
+    // Oven View
     // ----------------------
-    if ($_GET['mode'] == 'projdelete')
-    {
-        /*
-        $resData = JSONGet();
-
-        $targetDirectory = "../files/images/";
-
-        // check
-        {
-
-        }
-
-        //
-        $sql = " select * from project_tbl where id = '" . $resData->dProj->id . "'";
-        $rsgetacc=mysqli_query($connection,$sql);
-        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
-        {
-            if ($rowsgetacc->proj_img == "none.png")
-            {
-                continue;
-            }
-
-            // delete
-            unlink($targetDirectory . $rowsgetacc->proj_img);
-        }
-
-        // login
-        $sql="delete from project_tbl where id = '" . $resData->dProj->id . "'"; 
-        $rsgetacc=mysqli_query($connection,$sql);
-
-        // result
-        JSONSet("ok", "Delete Success!", "Project detail removed successfully.");
-        */
-
-        JSONSet("ok", "Delete Failed!", "Request to OM for project data removal.");
-    }
-
-
-    // file - List By Proj Id
-    // ----------------------
-    if ($_GET['mode'] == 'filelist2')
+    if ($_GET['mode'] == 'getlock')
     {
         $resData = JSONGet();
 
-        // set
-        $resList = array();
-
-        // login
-        $sql="select * FROM files_tbl where file_projid = '" . $_GET['pid'] . "' order by file_type asc"; 
-        $rsgetacc=mysqli_query($connection,$sql);
-        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        // check exist
         {
-            $resList[] = $rowsgetacc;
-        }
-
-        JSONSet("ok", "", "", $resList);
-    }
-
-    // file - upload By Proj Id
-    // ----------------------
-    if ($_GET['mode'] == 'fileupload2')
-    {
-        $targetDirectory = "../projectfiles/"; // Specify the directory where you want to store the uploaded files
-        if (!empty($_FILES)) {
-            $tempFile = $_FILES['file']['tmp_name'];
-            $fileName = $_FILES['file']['name'];
-
-            //
-            $fileName = $_GET['pid'] . "-" . $fileName;
-
-            // 
-            $targetFile = $targetDirectory . $fileName;
-            $ext = pathinfo($targetFile, PATHINFO_EXTENSION);
-
-            // save DB
-            $sql = "    insert into files_tbl
-                            (
-                                file_projid,
-                                file_name,
-                                file_type,
-                                file_date
-                            )
-                        values
-                            (
-                                '" . $_GET['pid'] . "',
-                                '" . $fileName . "',
-                                '" . $ext . "',
-                                '" . $dateResult . "'
-                            )
-            ";
+            $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
             $rsgetacc=mysqli_query($connection,$sql);
-
-
-            // Move the uploaded file to the target directory
-            if (move_uploaded_file($tempFile, $targetFile)) {
-                // File was uploaded successfully
-                echo "File uploaded: " . $fileName;
-            } else {
-                // Error occurred while uploading the file
-                echo "Error uploading file.";
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                echo $rowsgetacc->oven_lock;
             }
         }
     }
 
-    // file - delete By Id
+    // ards
+    // Oven View
     // ----------------------
-    if ($_GET['mode'] == 'filedelete2')
+    if ($_GET['mode'] == 'getcurrent')
     {
         $resData = JSONGet();
 
-        $targetDirectory = "../projectfiles/"; // Specify the directory where you want to store the uploaded files
-        
-        //
-        $sql = " select * from files_tbl where id = '" . $resData->dId . "'";
-        $rsgetacc=mysqli_query($connection,$sql);
-        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        // check exist
         {
-            // delete
-            unlink($targetDirectory . $rowsgetacc->file_name);
+            $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                echo $rowsgetacc->oven_current;
+            }
         }
-
-        // 
-        $sql = " delete from files_tbl where id = '" . $resData->dId . "'";
-        $rsgetacc=mysqli_query($connection,$sql);
-
-
-        // result
-        JSONSet("ok", "Delete Success!", "File has been deleted. (" . $resData->dPid . ")");    
     }
 
-    // file - delete all By Proj Id
+    // ards
+    // Oven View
     // ----------------------
-    if ($_GET['mode'] == 'filedelete2all')
+    if ($_GET['mode'] == 'gethumi')
     {
         $resData = JSONGet();
 
-        $targetDirectory = "../projectfiles/"; // Specify the directory where you want to store the uploaded files
-        
-        //
-        $sql = " select * from files_tbl where file_projid = '" . $resData->dPid . "'";
-        $rsgetacc=mysqli_query($connection,$sql);
-        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        // check exist
         {
-            // delete
-            unlink($targetDirectory . $rowsgetacc->file_name);
+            $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                echo $rowsgetacc->oven_humi;
+            }
+        }
+    }
+
+    // ards
+    // Oven View
+    // ----------------------
+    if ($_GET['mode'] == 'gettemp')
+    {
+        $resData = JSONGet();
+
+        // check exist
+        {
+            $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                echo $rowsgetacc->oven_temp;
+            }
+        }
+    }
+
+    // ards
+    // Oven View
+    // ----------------------
+    if ($_GET['mode'] == 'gettimer')
+    {
+        $resData = JSONGet();
+
+        // check exist
+        {
+            $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                echo convertSecondsToTime($rowsgetacc->oven_timer);
+            }
+        }
+    }
+
+    // ards
+    // Oven View
+    // ----------------------
+    if ($_GET['mode'] == 'gettimermain')
+    {
+        $resData = JSONGet();
+
+        // check exist
+        {
+            $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
+            $rsgetacc=mysqli_query($connection,$sql);
+            while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+            {
+                echo convertSecondsToTime($rowsgetacc->oven_timermain);
+            }
+        }
+    }
+
+    // ards
+    // Oven View
+    // ----------------------
+    if ($_GET['mode'] == 'setcurrent')
+    {
+        $resData = JSONGet();
+
+        {
+            // kwh?
+            $watt = $_GET['val'] * 220;
+            $kwh = ($watt * 24) / 1000;
         }
 
-        // 
-        $sql = " delete from files_tbl where file_projid = '" . $resData->dPid . "'";
+        $sql="  update oven_tbl set
+                    oven_current = '" . $_GET['val'] . "',
+                    oven_kwh = '" . $kwh . "'
+                where 
+                    id = '" . $_GET['id'] . "'
+        "; 
         $rsgetacc=mysqli_query($connection,$sql);
-
-        // result
-        JSONSet("ok", "Delete Success!", "All files associated with this project has been deleted. (" . $resData->dId . ")");
     }
+
+    // ards
+    // Oven View
+    // ----------------------
+    if ($_GET['mode'] == 'sethumi')
+    {
+        $resData = JSONGet();
+
+        {
+
+        }
+
+        $sql="  update oven_tbl set
+                    oven_humi = '" . $_GET['val'] . "'
+                where 
+                    id = '" . $_GET['id'] . "'
+        "; 
+        $rsgetacc=mysqli_query($connection,$sql);
+    }
+
+    // ards
+    // Oven View
+    // ----------------------
+    if ($_GET['mode'] == 'settemp')
+    {
+        $resData = JSONGet();
+
+        {
+
+        }
+
+        $sql="  update oven_tbl set
+                    oven_temp = '" . $_GET['val'] . "'
+                where 
+                    id = '" . $_GET['id'] . "'
+        "; 
+        $rsgetacc=mysqli_query($connection,$sql);
+    }
+
+
+
+
+
+    
+
+
+
+
+
+
+
 
 
     /*
@@ -1177,6 +1123,16 @@
         }
 
         return sprintf('%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535));
+    }
+
+    // Time
+    // ---------------------------------------
+    function convertSecondsToTime($seconds) {
+        $hours = floor($seconds / 3600);
+        $minutes = floor(($seconds % 3600) / 60);
+        $seconds = $seconds % 60;
+        
+        return sprintf("%02d:%02d:%02d", $hours, $minutes, $seconds);
     }
 
     // Sanitize

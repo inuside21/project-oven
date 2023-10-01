@@ -234,7 +234,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" id="cMenuOperationBtn">
                             <a>
                                 <div class="statistic-box statistic-filled-3">
                                     <h2><span class="count-number1" id="count-numberOperation">---</span><span class="slight"></span></h2>
@@ -254,7 +254,7 @@
                             </a>
                         </div>
 
-                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" id="cMenuStockBtn">
                             <a>
                                 <div class="statistic-box statistic-filled-3">
                                     <h2><span class="count-number1" id="count-numberStock">---</span><span class="slight"></span></h2>
@@ -264,7 +264,7 @@
                             </a>
                         </div>
 
-                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3" id="cMenuLockBtn">
                             <a>
                                 <div class="statistic-box statistic-filled-3">
                                     <h2><span class="count-number1" id="count-numberLock">---</span><span class="slight"></span></h2>
@@ -398,6 +398,34 @@
                         </div><!-- /.modal-dialog -->
                     </div>
 
+                    <div class="modal fade modal-danger in" id="modal-stock" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                    <h1 class="modal-title"><b style="font-size:80px;"><span id="tStockMain">0</span></b></h1>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                    <form id="fInfoStock" enctype="multipart/form-data">
+                                        <div class="form-group row">
+                                            <label for="example-text-input" class="col-sm-2 col-form-label">Stock</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" id="tStock" name="tStock">
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" id="fSubmitStock">Save</button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -446,7 +474,7 @@
             setInterval(function() {
                 LoadDataOven();
                 table1.ajax.reload();
-            }, 1000);
+            }, 200);
 
 
             // Interaction
@@ -599,12 +627,50 @@
                 );
             });
 
+            // Operation
+            $('#cMenuOperationBtn').click(function(e) {
+                $.ajax({
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    url: "server/api.php?mode=ovenoperationedit",
+                    data: JSON.stringify({
+                        dOven: getReqDataOven,
+                    }),
+                    beforeSend: function() {
+                        // button
+                        $('#fButton').toggle();
+                    },
+                    success: function(data) {
+                        // button
+                        $('#fButton').toggle();
+                        
+                        // result
+                        console.log(data);
+                        const result = JSON.parse(data);
+                        
+                        
+                        // check
+                        if (result.status == "ok")
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                        }
+                    },
+                    error: function(data) {
+                        
+                    }
+                });
+            });
+
             // Timer
             $('#cMenuTimerBtn').click(function(e) {
                 $('#modal-timer').modal('show');
             });
 
-            // Timer
             $('#tTimerHourUpBtn').click(function(e) {
                 $.ajax({
                     type: "POST",
@@ -624,6 +690,240 @@
                         
                         // result
                         const result = JSON.parse(data);
+                        
+                        // check
+                        if (result.status == "ok")
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                        }
+                    },
+                    error: function(data) {
+                        
+                    }
+                });
+            });
+
+            $('#tTimerHourDownBtn').click(function(e) {
+                $.ajax({
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    url: "server/api.php?mode=oventimerhourdownedit",
+                    data: JSON.stringify({
+                        dOven: getReqDataOven,
+                    }),
+                    beforeSend: function() {
+                        // button
+                        $('#fButton').toggle();
+                    },
+                    success: function(data) {
+                        // button
+                        $('#fButton').toggle();
+                        
+                        // result
+                        const result = JSON.parse(data);
+                        
+                        // check
+                        if (result.status == "ok")
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                        }
+                    },
+                    error: function(data) {
+                        
+                    }
+                });
+            });
+
+            $('#tTimerMinUpBtn').click(function(e) {
+                $.ajax({
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    url: "server/api.php?mode=oventimerminupedit",
+                    data: JSON.stringify({
+                        dOven: getReqDataOven,
+                    }),
+                    beforeSend: function() {
+                        // button
+                        $('#fButton').toggle();
+                    },
+                    success: function(data) {
+                        // button
+                        $('#fButton').toggle();
+                        
+                        // result
+                        const result = JSON.parse(data);
+                        
+                        // check
+                        if (result.status == "ok")
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                        }
+                    },
+                    error: function(data) {
+                        
+                    }
+                });
+            });
+
+            $('#tTimerMinDownBtn').click(function(e) {
+                $.ajax({
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    url: "server/api.php?mode=oventimermindownedit",
+                    data: JSON.stringify({
+                        dOven: getReqDataOven,
+                    }),
+                    beforeSend: function() {
+                        // button
+                        $('#fButton').toggle();
+                    },
+                    success: function(data) {
+                        // button
+                        $('#fButton').toggle();
+                        
+                        // result
+                        const result = JSON.parse(data);
+                        
+                        // check
+                        if (result.status == "ok")
+                        {
+                            
+                        }
+                        else
+                        {
+                            
+                        }
+                    },
+                    error: function(data) {
+                        
+                    }
+                });
+            });
+
+            // Stock
+            $('#cMenuStockBtn').click(function(e) {
+                $('#modal-stock').modal('show');
+            });
+
+            $('#fSubmitStock').click(function(e) {
+                // check
+                swal(
+                    {
+                        title: "Are you sure?",
+                        text: "Pressing the Proceed button will save the data.",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#E5343D",
+                        confirmButtonText: "Proceed",
+                        closeOnConfirm: false
+                    },
+                    function() {
+                        /*
+                        // image
+                        var file = $('#rImage')[0].files[0];
+                        var reader = new FileReader();
+                        reader.onload = function() {
+                            var base64 = reader.result.replace(/^data:image\/(png|jpeg|jpg);base64,/, '');
+                            $('#rWe').val(base64);
+                        };
+                        reader.readAsDataURL(file);
+                        */
+
+                        // form
+                        var formData = {};
+                        $.each($('#fInfoStock').serializeArray(), function() {
+                            var key = this.name;
+                            var value = this.value;
+                            if (formData[key] !== undefined) {
+                                if (!Array.isArray(formData[key])) {
+                                    formData[key] = [formData[key]];
+                                }
+                                formData[key].push(value);
+                            } else {
+                                formData[key] = value;
+                            }
+                        });
+
+                        // request
+                        $.ajax({
+                            type: "POST",
+                            contentType: false,
+                            processData: false,
+                            url: "server/api.php?mode=ovenstockedit&oid=" + getId,
+                            data: JSON.stringify(formData),
+                            beforeSend: function() {
+                                // button
+                                $('#fButton').toggle();
+                            },
+                            success: function(data) {
+                                // button
+                                $('#fButton').toggle();
+
+                                console.log(data)
+                                
+                                // result
+                                const result = JSON.parse(data);
+                               
+                                // check
+                                if (result.status == "ok")
+                                {
+                                    //message
+                                    swal(result.title, result.message, "success");
+                                }
+                                else
+                                {
+                                    // message
+                                    swal(result.title, result.message, "error");
+                                }
+                            },
+                            error: function(data) {
+                                // button
+                                $('#fButton').toggle();
+
+                                // message
+                                swal("Error!", "Something went wrong. Please try again.", "error");
+                            }
+                        });
+                    }
+                );
+            });
+
+            // Lock
+            $('#cMenuLockBtn').click(function(e) {
+                $.ajax({
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    url: "server/api.php?mode=ovenlockedit",
+                    data: JSON.stringify({
+                        dOven: getReqDataOven,
+                    }),
+                    beforeSend: function() {
+                        // button
+                        $('#fButton').toggle();
+                    },
+                    success: function(data) {
+                        // button
+                        $('#fButton').toggle();
+                        
+                        // result
+                        const result = JSON.parse(data);
+                        console.log(result.message);
                         
                         // check
                         if (result.status == "ok")
@@ -724,6 +1024,9 @@
 
                             // timer 
                             $('#tTimerMain').text(ConvertIntToTimer(getReqDataOven.oven_timermain));
+
+                            // stock
+                            $('#tStockMain').text(getReqDataOven.oven_stock);
 
                             /*
                             $('#pDept').trigger('change');
