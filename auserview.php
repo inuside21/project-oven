@@ -141,7 +141,7 @@
                                                         <label for="example-text-input" class="col-sm-2 col-form-label">Access Type</label>
                                                         <div class="col-sm-10">
                                                             <select class="form-control" id="rAccess" name="rAccess">
-                                                                <option value=1 selected>Normal Access</option>
+                                                                <option value=1 selected>Operator</option>
                                                                 <option value=0>Administrator</option>
                                                             </select>
                                                         </div>

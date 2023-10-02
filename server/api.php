@@ -175,7 +175,7 @@
             {
                 if ($rowsgetacc->user_pos == "1")
                 {
-                    $rowsgetacc->user_pos = "Normal User";
+                    $rowsgetacc->user_pos = "Operator";
                 }
 
                 if ($rowsgetacc->user_pos == "0")

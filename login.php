@@ -109,7 +109,7 @@
                                 //message
                                 //swal("Added!", result.message, "success");
                                 localStorage.setItem("tokenId", result.data);
-                                window.location.href = "dashboard.php";
+                                window.location.href = "ovenview.php?id=1";
                             }
                             else
                             {
