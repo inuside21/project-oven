@@ -1058,6 +1058,7 @@
                 table1 = $("#dataTableExample1").DataTable({
                     dom: 'Bfrtip',
                     buttons: [
+                        'excel'
                     ],
                     aaSorting: [],
                     ajax: {

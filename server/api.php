@@ -1043,59 +1043,41 @@
     // ards
     // Oven View
     // ----------------------
-    if ($_GET['mode'] == 'setcurrent')
+    if ($_GET['mode'] == 'setdata')
     {
         $resData = JSONGet();
 
         {
             // kwh?
-            $watt = $_GET['val'] * 220;
+            $watt = $_GET['val1'] * 220;
             $kwh = ($watt * 24) / 1000;
         }
 
         $sql="  update oven_tbl set
-                    oven_current = '" . $_GET['val'] . "',
-                    oven_kwh = '" . $kwh . "'
+                    oven_current = '" . $_GET['val1'] . "',
+                    oven_kwh = '" . $kwh . "',
+                    oven_humi = '" . $_GET['val2'] . "',
+                    oven_temp = '" . $_GET['val3'] . "'
                 where 
                     id = '" . $_GET['id'] . "'
         "; 
-        $rsgetacc=mysqli_query($connection,$sql);
-    }
 
-    // ards
-    // Oven View
-    // ----------------------
-    if ($_GET['mode'] == 'sethumi')
-    {
-        $resData = JSONGet();
-
-        {
-
-        }
-
-        $sql="  update oven_tbl set
-                    oven_humi = '" . $_GET['val'] . "'
-                where 
-                    id = '" . $_GET['id'] . "'
-        "; 
-        $rsgetacc=mysqli_query($connection,$sql);
-    }
-
-    // ards
-    // Oven View
-    // ----------------------
-    if ($_GET['mode'] == 'settemp')
-    {
-        $resData = JSONGet();
-
-        {
-
-        }
-
-        $sql="  update oven_tbl set
-                    oven_temp = '" . $_GET['val'] . "'
-                where 
-                    id = '" . $_GET['id'] . "'
+        $sql="  insert into oven_log_tbl
+                    (
+                        oven_id,
+                        oven_date,
+                        oven_temp,
+                        oven_current,
+                        oven_kwh
+                    )
+                values
+                    (
+                        '" . $_GET['id'] . "',
+                        '" . $dateResult . "',
+                        '" . $_GET['val3'] . "',
+                        '" . $_GET['val1'] . "',
+                        '" . $kwh . "'
+                    )
         "; 
         $rsgetacc=mysqli_query($connection,$sql);
     }
