@@ -173,12 +173,12 @@
         {
             // others
             {
-                if ($rowsgetacc->user_pos == "0")
+                if ($rowsgetacc->user_pos == "1")
                 {
                     $rowsgetacc->user_pos = "Normal User";
                 }
 
-                if ($rowsgetacc->user_pos == "1")
+                if ($rowsgetacc->user_pos == "0")
                 {
                     $rowsgetacc->user_pos = "Administrator";
                 }
@@ -736,12 +736,18 @@
         echo $resData->dOven->oven_status;
     }
 
-
     // Oven Timer Hour Up Edit
     // ----------------------
     if ($_GET['mode'] == 'oventimerhourupedit')
     {
         $resData = JSONGet();
+
+        {
+            if ($resData->dOven->oven_status != "IDLE")
+            {
+                return;
+            }
+        }
 
         // item
         { 
@@ -763,6 +769,13 @@
     {
         $resData = JSONGet();
 
+        {
+            if ($resData->dOven->oven_status != "IDLE")
+            {
+                return;
+            }
+        }
+
         // item
         { 
             $sql="  update oven_tbl set
@@ -782,6 +795,13 @@
     if ($_GET['mode'] == 'oventimerminupedit')
     {
         $resData = JSONGet();
+
+        {
+            if ($resData->dOven->oven_status != "IDLE")
+            {
+                return;
+            }
+        }
 
         // item
         { 
@@ -803,6 +823,13 @@
     {
         $resData = JSONGet();
 
+        {
+            if ($resData->dOven->oven_status != "IDLE")
+            {
+                return;
+            }
+        }
+
         // item
         { 
             $sql="  update oven_tbl set
@@ -823,6 +850,15 @@
     {
         $resData = JSONGet();
 
+        {
+            /*
+            if ($resData->dOven->oven_status != "IDLE")
+            {
+                return;
+            }
+            */
+        }
+
         // item
         { 
             $sql="  update oven_tbl set
@@ -842,6 +878,15 @@
     if ($_GET['mode'] == 'ovenlockedit')
     {
         $resData = JSONGet();
+        
+        {
+            /*
+            if ($resData->dOven->oven_status != "IDLE" || $resData->dOven->oven_status != "COMPLETE")
+            {
+                return;
+            }
+            */
+        }
 
         $lockVal = 0;
         if ($resData->dOven->oven_lock == "LOCKED")

@@ -74,6 +74,7 @@
 
             <!-- Menu Side -->
             <?php echo $configMenu; ?>
+            <?php echo $configMenu2; ?>
 
             <!-- Main Content -->
             <div id=page-wrapper>
@@ -186,8 +187,14 @@
                             // check admin
                             if (result.data.user_pos == "0")
                             {
-                                $('[id="isadmin"]').hide();
-                                //window.location.href = "dashboard.php";
+                                $('[id="admmenu"]').show();
+                                $('[id="opmenu"]').hide();
+                            }
+                            else
+                            {
+                                $('[id="admmenu"]').hide();
+                                $('[id="opmenu"]').show();
+                                window.location.href = "login.php";
                             }
                         }
                         else
@@ -202,7 +209,7 @@
             }
 
             // Logout User
-            $('#uLogout').click(function(e) {
+            $('[id="uLogout"]').click(function(e) {
                 localStorage.setItem("tokenId", "");
                 window.location.href = "login.php";
             });

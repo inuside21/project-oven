@@ -131,7 +131,7 @@
 
     // Menu
     $configMenu = '
-        <div class=sidebar role=navigation>
+        <div class=sidebar role=navigation id="admmenu">
             <div class="sidebar-nav navbar-collapse">
                 <ul class=nav id=side-menu>
                     <li class="nav-heading "> <span>Main Navigation</span></li>
@@ -144,6 +144,25 @@
                     <li class="nav-heading "> <span>Accounts</span></li>
                     <li><a href=auserlist.php class=material-ripple><i class=material-icons>home</i> Account List</a></li>
                     <li><a href=auseradd.php class=material-ripple><i class=material-icons>home</i> Account Add</a></li>
+
+                    <li class="nav-heading "> <span>User</span></li>
+                    <li><a href="#" class=material-ripple id="uLogout"><i class=material-icons>keyboard_backspace</i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class=control-sidebar-bg></div>
+    ';
+
+    // Menu2
+    $configMenu2 = '
+        <div class=sidebar role=navigation id="opmenu">
+            <div class="sidebar-nav navbar-collapse">
+                <ul class=nav id=side-menu>
+                    <li class="nav-heading "> <span>Main Navigation</span></li>
+                    <li class=active><a href=dashboard.php class=material-ripple><i class=material-icons>home</i> Dashboard</a></li>
+
+                    <li class="nav-heading "> <span>Oven</span></li>
+                    <li><a href="ovenlist.php" class=material-ripple><i class=material-icons>assignment</i> Oven List</a></li>
 
                     <li class="nav-heading "> <span>User</span></li>
                     <li><a href="#" class=material-ripple id="uLogout"><i class=material-icons>keyboard_backspace</i> Logout</a></li>
