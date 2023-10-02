@@ -1100,6 +1100,25 @@
         $rsgetacc=mysqli_query($connection,$sql);
     }
 
+    // ards
+    // Oven View
+    // ----------------------
+    if ($_GET['mode'] == 'settimer')
+    {
+        $resData = JSONGet();
+
+        {
+
+        }
+
+        $sql="  update oven_tbl set
+                    oven_timer = oven_timer - 1
+                where 
+                    id = '" . $_GET['id'] . "'
+        "; 
+        $rsgetacc=mysqli_query($connection,$sql);
+    }
+
 
 
 
@@ -1173,6 +1192,11 @@
     // Time
     // ---------------------------------------
     function convertSecondsToTime($seconds) {
+        if ($seconds <= 0)
+        {
+            $seconds = 0;
+        }
+
         $hours = floor($seconds / 3600);
         $minutes = floor(($seconds % 3600) / 60);
         $seconds = $seconds % 60;
