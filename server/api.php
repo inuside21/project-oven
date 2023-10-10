@@ -571,13 +571,14 @@
                 }
 
                 //
-                if ((int)$rowsgetacc->oven_connected < strtotime($dateResult))
+                $timeDiff = strtotime($dateResult) - (int)$rowsgetacc->oven_connected;
+                if ($timeDiff > 10)
                 {
                     $rowsgetacc->oven_connected = "OFFLINE";
                 }
 
                 //
-                if ((int)$rowsgetacc->oven_connected >= strtotime($dateResult))
+                if ($timeDiff <= 10)
                 {
                     $rowsgetacc->oven_connected = "ONLINE";
                 }
@@ -657,13 +658,14 @@
                     }
 
 
-                    //
-                    if ((int)$rowsgetacc->oven_connected < strtotime($dateResult))
+                    $timeDiff = strtotime($dateResult) - (int)$rowsgetacc->oven_connected;
+                    if ($timeDiff > 10)
                     {
                         $rowsgetacc->oven_connected = "OFFLINE";
                     }
 
-                    if ((int)$rowsgetacc->oven_connected >= strtotime($dateResult))
+                    //
+                    if ($timeDiff <= 10)
                     {
                         $rowsgetacc->oven_connected = "ONLINE";
                     }
@@ -981,7 +983,7 @@
             $rsgetacc=mysqli_query($connection,$sql);
             while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
             {
-                echo $rowsgetacc->oven_humi;
+                echo number_format($rowsgetacc->oven_humi, 2, '.', ''); //echo $rowsgetacc->oven_humi;
             }
         }
     }
@@ -999,7 +1001,7 @@
             $rsgetacc=mysqli_query($connection,$sql);
             while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
             {
-                echo $rowsgetacc->oven_temp;
+                echo number_format($rowsgetacc->oven_temp, 2, '.', ''); //$rowsgetacc->oven_temp;
             }
         }
     }
@@ -1093,8 +1095,47 @@
 
         }
 
+        //
+        $ovenData = new stdClass();
+        $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
+        $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            $ovenData = $rowsgetacc;
+        }
+
+        {
+            // running?
+            if ($ovenData->oven_status == "1")
+            {
+                if ((int)$ovenData->oven_timer > 0)
+                {
+                    $timeDiff = strtotime($dateResult) - (int)$ovenData->oven_connected;
+
+                    $sql="  update oven_tbl set
+                                oven_timer = oven_timer - " . $timeDiff . "
+                            where 
+                                id = '" . $_GET['id'] . "'
+                    "; 
+                    $rsgetacc=mysqli_query($connection,$sql);
+                }
+
+                if ((int)$ovenData->oven_timer <= 0)
+                {
+                    $sql="  update oven_tbl set
+                                oven_timer = 0,
+                                oven_status = 2
+                            where 
+                                id = '" . $_GET['id'] . "'
+                    "; 
+                    $rsgetacc=mysqli_query($connection,$sql);
+                }
+            }
+        }
+
+        // update connection
         $sql="  update oven_tbl set
-                    oven_timer = oven_timer - 1
+                    oven_connected = '" . strtotime($dateResult) . "'
                 where 
                     id = '" . $_GET['id'] . "'
         "; 
