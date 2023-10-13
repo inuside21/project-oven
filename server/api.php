@@ -1055,6 +1055,7 @@
             $kwh = ($watt * 24) / 1000;
         }
 
+        //
         $sql="  update oven_tbl set
                     oven_current = '" . $_GET['val1'] . "',
                     oven_kwh = '" . $kwh . "',
@@ -1062,26 +1063,38 @@
                     oven_temp = '" . $_GET['val3'] . "'
                 where 
                     id = '" . $_GET['id'] . "'
-        "; 
+        ";
+        $rsupd=mysqli_query($connection,$sql); 
 
-        $sql="  insert into oven_log_tbl
-                    (
-                        oven_id,
-                        oven_date,
-                        oven_temp,
-                        oven_current,
-                        oven_kwh
-                    )
-                values
-                    (
-                        '" . $_GET['id'] . "',
-                        '" . $dateResult . "',
-                        '" . $_GET['val3'] . "',
-                        '" . $_GET['val1'] . "',
-                        '" . $kwh . "'
-                    )
-        "; 
+        //
+        $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
         $rsgetacc=mysqli_query($connection,$sql);
+        while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
+        {
+            if ($rowsgetacc->oven_status == "1")
+            {
+                $sql="  insert into oven_log_tbl
+                            (
+                                oven_id,
+                                oven_date,
+                                oven_temp,
+                                oven_current,
+                                oven_kwh
+                            )
+                        values
+                            (
+                                '" . $_GET['id'] . "',
+                                '" . $dateResult . "',
+                                '" . $_GET['val3'] . "',
+                                '" . $_GET['val1'] . "',
+                                '" . $kwh . "'
+                            )
+                "; 
+                $rsupd=mysqli_query($connection,$sql);
+            }
+        }
+
+        
     }
 
     // ards
