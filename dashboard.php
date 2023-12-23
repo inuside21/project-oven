@@ -143,7 +143,7 @@
                             <a href="">
                                 <div class="statistic-box statistic-filled-3">
                                     <h2><span class="count-number1" id="count-number1">---</span><span class="slight"></span></h2>
-                                    <div class="small">Total Oven</div>
+                                    <div class="small">Total Dried Fish</div>
                                     <i class="ti-check-box statistic_icon"></i>
                                 </div>
                             </a>

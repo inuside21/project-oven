@@ -194,7 +194,7 @@
                             <i class=pe-7s-box1></i>
                         </div>
                         <div class=header-title>
-                            <h1>Add New Oven <b><span id="dName"></span></b></h1>
+                            <h1>Add New Dried Fish<b><span id="dName"></span></b></h1>
                             <small>Navigate left menu to view or modify app content</small>
                             <ol class=breadcrumb>
                                 <li class=active><a href=dashboard.php><i class=pe-7s-home></i> Home</a></li>
@@ -228,8 +228,8 @@
                                     <div class="panel panel-danger">
                                         <div class="panel-heading">
                                             <div class="panel-title">
-                                                <h4>Oven Information</h4> <br>
-                                                <h5>General information of the oven</h5>
+                                                <h4>Dried Fish Information</h4> <br>
+                                                <h5>General information of the Dried Fish</h5>
                                             </div>
                                         </div>
                                         <div class="panel-body">
@@ -252,7 +252,7 @@
                                                     </div>
                                                     
                                                     <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Oven Name</label>
+                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Dried Fish Name</label>
                                                         <div class="col-sm-10">
                                                             <input class="form-control" type="text" id="oName" name="oName">
                                                         </div>

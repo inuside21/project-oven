@@ -84,8 +84,8 @@
                             <i class=pe-7s-box1></i>
                         </div>
                         <div class=header-title>
-                            <h1>Oven List</h1>
-                            <small>List of all oven</small>
+                            <h1>Dried Fish List</h1>
+                            <small>List of all Dried Fish</small>
                             <ol class=breadcrumb>
                                 <li class=active><a href=dashboard.php><i class=pe-7s-home></i> Home</a></li>
                             </ol>
@@ -98,7 +98,7 @@
                                 <div class="panel panel-danger">
                                     <div class="panel-heading">
                                         <div class="panel-title">
-                                            <h4>Oven List</h4> <br>
+                                            <h4>Dried Fish List</h4> <br>
                                             <h5>Click on item name to view details</h5>
                                         </div>
                                     </div>
@@ -107,7 +107,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>ID</th>
-                                                    <th>Oven Name</th>
+                                                    <th>Dried Fish Name</th>
                                                     <th>Status</th>
                                                     <th>Connection</th>
                                                 </tr>

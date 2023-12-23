@@ -206,6 +206,16 @@
                         <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
                             <a>
                                 <div class="statistic-box statistic-filled-3">
+                                    <h2><span class="count-number1" id="count-numberHumidity">---</span><span class="slight"></span></h2>
+                                    <div class="small">Humidity</div>
+                                    <i class="ti-check-box statistic_icon"></i>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 d-none">
+                            <a>
+                                <div class="statistic-box statistic-filled-3">
                                     <h2><span class="count-number1" id="count-numberCurrent">---</span><span class="slight"></span></h2>
                                     <div class="small">Current</div>
                                     <i class="ti-check-box statistic_icon"></i>
@@ -302,8 +312,8 @@
                                     <div class="panel panel-danger">
                                         <div class="panel-heading">
                                             <div class="panel-title">
-                                                <h4>Oven Information</h4> <br>
-                                                <h5>General information of the oven</h5>
+                                                <h4>Dried Fish Information</h4> <br>
+                                                <h5>General information of the Dried Fish</h5>
                                             </div>
                                         </div>
                                         <div class="panel-body">
@@ -326,9 +336,16 @@
                                                     </div>
                                                     
                                                     <div class="form-group row">
-                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Oven Name</label>
+                                                        <label for="example-text-input" class="col-sm-2 col-form-label">Dried Fish Name</label>
                                                         <div class="col-sm-10">
                                                             <input class="form-control" type="text" id="oName" name="oName">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <label for="example-text-input" class="col-sm-2 col-form-label">User Name</label>
+                                                        <div class="col-sm-10">
+                                                            <input class="form-control" type="text" id="oNameOp" name="oNameOp">
                                                         </div>
                                                     </div>
                                                     
@@ -349,7 +366,7 @@
                                     <div class="panel-heading">
                                         <div class="panel-title">
                                             <h4>Logs</h4> <br>
-                                            <h5>Logging of this oven</h5>
+                                            <h5>Logging of this Dried Fish</h5>
                                         </div>
                                     </div>
                                     <div class="panel-body">
@@ -357,9 +374,9 @@
                                             <thead>
                                                 <tr>
                                                     <th>Date</th>
-                                                    <th>Temp</th>
-                                                    <th>Current</th>
-                                                    <th>KWH</th>
+                                                    <th>Status</th>
+                                                    <th>Dried Fish</th>
+                                                    <th>User</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -460,6 +477,7 @@
             const params = new URLSearchParams(window.location.search);
             const getId = params.get('id');
             
+            var isOvenLoaded = false;
             var getReqDataOven;
             var table1;
 
@@ -1014,11 +1032,21 @@
 
                             // form
                             $('#rId').val(getReqDataOven.id);
-                            //$('#rImageOrig').val(getReqDataOven.proj_img);
-                            $('#oName').val(getReqDataOven.oven_name);
+
+                            if (!isOvenLoaded)
+                            {
+                                //
+                                isOvenLoaded = true;
+
+                                //
+                                //$('#rImageOrig').val(getReqDataOven.proj_img);
+                                $('#oName').val(getReqDataOven.oven_name);
+                                $('#oNameOp').val(getReqDataOven.oven_operator);
+                            }
 
                             //
                             $('#count-numberTemp').text(getReqDataOven.oven_temp + " °C");
+                            $('#count-numberHumidity').text(getReqDataOven.oven_humi + " %");
                             $('#count-numberCurrent').text(getReqDataOven.oven_current + " A");
                             $('#count-numberKwh').text(getReqDataOven.oven_kwh + " KWH");
                             $('#count-numberConnection').text(getReqDataOven.oven_connected);
@@ -1075,19 +1103,19 @@
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return data.oven_temp + " °C";
+                                return "<b>Temperature:</b><br>" + data.oven_temp + " °C" + "<br><br><b>Humidity:</b><br>" + data.oven_humi + " %" + "<br><br><b>KWH:</b><br>" + data.oven_kwh + " KWH";
                             } 
                         },
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return data.oven_current + " A";
+                                return data.oven_name;
                             } 
                         },
                         { 
                             data: null, 
                             render: function ( data, type, row, meta ) {
-                                return data.oven_kwh + " KWH";
+                                return data.oven_operator;
                             } 
                         },
                     ]

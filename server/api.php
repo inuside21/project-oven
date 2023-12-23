@@ -393,7 +393,7 @@
 
 
 
-    // Oven Add
+    // Dried Fish Add
     // ----------------------
     if ($_GET['mode'] == 'ovenadd')
     {
@@ -457,10 +457,10 @@
         }
 
         // result
-        JSONSet("ok", "Add Success!", "New oven detail added successfully.");
+        JSONSet("ok", "Add Success!", "New Dried Fish detail added successfully.");
     }
 
-    // Oven Edit
+    // Dried Fish Edit
     // ----------------------
     if ($_GET['mode'] == 'ovenedit')
     {
@@ -512,7 +512,8 @@
         // item
         { 
             $sql="  update oven_tbl set
-                        oven_name = '" . $resData->oName . "'
+                        oven_name = '" . $resData->oName . "',
+                        oven_operator = '" . $resData->oNameOp . "'
                     where
                         id = '" . $resData->rId . "'
             "; 
@@ -520,10 +521,10 @@
         }
 
         // result
-        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+        JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully.");
     }
 
-    // Oven Delete
+    // Dried Fish Delete
     // ----------------------
     if ($_GET['mode'] == 'ovendelete')
     {
@@ -533,10 +534,10 @@
         $rsgetacc=mysqli_query($connection,$sql);
 
         // result
-        JSONSet("ok", "Delete Success!", "Oven detail has been removed successfully.");
+        JSONSet("ok", "Delete Success!", "Dried Fish detail has been removed successfully.");
     }
 
-    // Oven List
+    // Dried Fish List
     // ----------------------
     if ($_GET['mode'] == 'ovenlist')
     {
@@ -590,7 +591,7 @@
         JSONSet("ok", "", $sql, $resList);
     }
 
-    // Oven Log List
+    // Dried Fish Log List
     // ----------------------
     if ($_GET['mode'] == 'ovenloglist')
     {
@@ -615,7 +616,7 @@
         JSONSet("ok", "", $sql, $resList);
     }
 
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'ovenview')
     {
@@ -681,7 +682,7 @@
     }
 
 
-    // Oven Operation Edit
+    // Dried Fish Operation Edit
     // ----------------------
     if ($_GET['mode'] == 'ovenoperationedit')
     {
@@ -702,7 +703,7 @@
                 $rsgetacc=mysqli_query($connection,$sql);
 
                 // result
-                JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+                JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully.");
             }
 
             // running?
@@ -717,7 +718,7 @@
                 $rsgetacc=mysqli_query($connection,$sql);
 
                 // result
-                JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+                JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully.");
             }
 
             // complete?
@@ -731,14 +732,14 @@
                 $rsgetacc=mysqli_query($connection,$sql);
 
                 // result
-                JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+                JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully.");
             }
         }
 
         echo $resData->dOven->oven_status;
     }
 
-    // Oven Timer Hour Up Edit
+    // Dried Fish Timer Hour Up Edit
     // ----------------------
     if ($_GET['mode'] == 'oventimerhourupedit')
     {
@@ -762,10 +763,10 @@
         }
 
         // result
-        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+        JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully.");
     }
 
-    // Oven Timer Hour Down Edit
+    // Dried Fish Timer Hour Down Edit
     // ----------------------
     if ($_GET['mode'] == 'oventimerhourdownedit')
     {
@@ -789,10 +790,10 @@
         }
 
         // result
-        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+        JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully.");
     }
 
-    // Oven Timer Min Up Edit
+    // Dried Fish Timer Min Up Edit
     // ----------------------
     if ($_GET['mode'] == 'oventimerminupedit')
     {
@@ -816,10 +817,10 @@
         }
 
         // result
-        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+        JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully.");
     }
 
-    // Oven Timer Min Down Edit
+    // Dried Fish Timer Min Down Edit
     // ----------------------
     if ($_GET['mode'] == 'oventimermindownedit')
     {
@@ -843,10 +844,10 @@
         }
 
         // result
-        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+        JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully.");
     }
 
-    // Oven Stock Edit
+    // Dried Fish Stock Edit
     // ----------------------
     if ($_GET['mode'] == 'ovenstockedit')
     {
@@ -872,10 +873,10 @@
         }
 
         // result
-        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully.");
+        JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully.");
     }
 
-    // Oven Lock Edit
+    // Dried Fish Lock Edit
     // ----------------------
     if ($_GET['mode'] == 'ovenlockedit')
     {
@@ -911,13 +912,13 @@
         }
 
         // result
-        JSONSet("ok", "Update Success!", "Oven detail has been updated successfully." . $resData->dOven->oven_lock);
+        JSONSet("ok", "Update Success!", "Dried Fish detail has been updated successfully." . $resData->dOven->oven_lock);
     }
 
 
 
     // ards
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'getstatus')
     {
@@ -935,7 +936,7 @@
     } 
 
     // ards
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'getlock')
     {
@@ -953,7 +954,7 @@
     }
 
     // ards
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'getcurrent')
     {
@@ -971,7 +972,7 @@
     }
 
     // ards
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'gethumi')
     {
@@ -983,13 +984,14 @@
             $rsgetacc=mysqli_query($connection,$sql);
             while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
             {
-                echo number_format($rowsgetacc->oven_humi, 2, '.', ''); //echo $rowsgetacc->oven_humi;
+                //echo number_format($rowsgetacc->oven_humi, 2, '.', ''); //echo $rowsgetacc->oven_humi;
+                echo $rowsgetacc->oven_humi;
             }
         }
     }
 
     // ards
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'gettemp')
     {
@@ -1007,7 +1009,7 @@
     }
 
     // ards
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'gettimer')
     {
@@ -1025,7 +1027,7 @@
     }
 
     // ards
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'gettimermain')
     {
@@ -1043,11 +1045,12 @@
     }
 
     // ards
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'setdata')
     {
         $resData = JSONGet();
+        $ovenData = new stdClass();
 
         {
             // kwh?
@@ -1056,49 +1059,63 @@
         }
 
         //
-        $sql="  update oven_tbl set
-                    oven_current = '" . $_GET['val1'] . "',
-                    oven_kwh = '" . $kwh . "',
-                    oven_humi = '" . $_GET['val2'] . "',
-                    oven_temp = '" . $_GET['val3'] . "'
-                where 
-                    id = '" . $_GET['id'] . "'
-        ";
-        $rsupd=mysqli_query($connection,$sql); 
-
-        //
         $sql="select * FROM oven_tbl where id = '" . $_GET['id'] . "'"; 
         $rsgetacc=mysqli_query($connection,$sql);
         while ($rowsgetacc = mysqli_fetch_object($rsgetacc))
         {
+            //
+            $ovenData = $rowsgetacc;
+
+            //
             if ($rowsgetacc->oven_status == "1")
             {
-                $sql="  insert into oven_log_tbl
-                            (
-                                oven_id,
-                                oven_date,
-                                oven_temp,
-                                oven_current,
-                                oven_kwh
-                            )
-                        values
-                            (
-                                '" . $_GET['id'] . "',
-                                '" . $dateResult . "',
-                                '" . $_GET['val3'] . "',
-                                '" . $_GET['val1'] . "',
-                                '" . $kwh . "'
-                            )
-                "; 
-                $rsupd=mysqli_query($connection,$sql);
+                //
+                if ((int)$rowsgetacc->oven_lastlog + 3600 <= (int)strtotime($dateResult))
+                {
+                    //
+                    $sql="  insert into oven_log_tbl
+                                (
+                                    oven_id,
+                                    oven_date,
+                                    oven_temp,
+                                    oven_humi,
+                                    oven_current,
+                                    oven_kwh,
+                                    oven_name,
+                                    oven_operator
+                                )
+                            values
+                                (
+                                    '" . $_GET['id'] . "',
+                                    '" . $dateResult . "',
+                                    '" . $_GET['val3'] . "',
+                                    '" . $_GET['val2'] . "',
+                                    '" . $_GET['val1'] . "',
+                                    '" . $kwh . "',
+                                    '" . $rowsgetacc->oven_name . "',
+                                    '" . $rowsgetacc->oven_operator . "'
+                                )
+                    "; 
+                    $rsupd=mysqli_query($connection,$sql);
+
+                    //
+                    $sql="  update oven_tbl set
+                                oven_current = '" . $_GET['val1'] . "',
+                                oven_kwh = '" . $kwh . "',
+                                oven_humi = '" . $_GET['val2'] . "',
+                                oven_temp = '" . $_GET['val3'] . "',
+                                oven_lastlog = '" . strtotime($dateResult) . "'
+                            where 
+                                id = '" . $_GET['id'] . "'
+                    ";
+                    $rsupd=mysqli_query($connection,$sql); 
+                }
             }
         }
-
-        
     }
 
     // ards
-    // Oven View
+    // Dried Fish View
     // ----------------------
     if ($_GET['mode'] == 'settimer')
     {

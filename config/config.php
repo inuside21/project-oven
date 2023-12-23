@@ -137,9 +137,9 @@
                     <li class="nav-heading "> <span>Main Navigation</span></li>
                     <li class=active><a href=dashboard.php class=material-ripple><i class=material-icons>home</i> Dashboard</a></li>
 
-                    <li class="nav-heading "> <span>Oven</span></li>
-                    <li><a href="ovenlist.php" class=material-ripple><i class=material-icons>assignment</i> Oven List</a></li>
-                    <li><a href="ovenadd.php" class=material-ripple><i class=material-icons>assignment</i> Oven Add</a></li>
+                    <li class="nav-heading "> <span>Dried Fish</span></li>
+                    <li><a href="ovenlist.php" class=material-ripple><i class=material-icons>assignment</i> Dried Fish List</a></li>
+                    <li><a href="ovenadd.php" class=material-ripple><i class=material-icons>assignment</i> Dried Fish Add</a></li>
 
                     <li class="nav-heading "> <span>Accounts</span></li>
                     <li><a href=auserlist.php class=material-ripple><i class=material-icons>home</i> Account List</a></li>
@@ -161,8 +161,8 @@
                     <li class="nav-heading "> <span>Main Navigation</span></li>
                     <li class=active><a href=dashboard.php class=material-ripple><i class=material-icons>home</i> Dashboard</a></li>
 
-                    <li class="nav-heading "> <span>Oven</span></li>
-                    <li><a href="ovenlist.php" class=material-ripple><i class=material-icons>assignment</i> Oven List</a></li>
+                    <li class="nav-heading "> <span>Dried Fish</span></li>
+                    <li><a href="ovenlist.php" class=material-ripple><i class=material-icons>assignment</i> Dried Fish List</a></li>
 
                     <li class="nav-heading "> <span>User</span></li>
                     <li><a href="#" class=material-ripple id="uLogout"><i class=material-icons>keyboard_backspace</i> Logout</a></li>
